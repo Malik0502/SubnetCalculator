@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Numerics;
 using System.Xml.XPath;
 
 namespace Service
@@ -13,33 +14,40 @@ namespace Service
 
         private void CalculateAvailableSubnets(string ipAdress, string subnetmask, int subnetAmount)
         {
-            int ipAdressInBinary = StringToBinary(ipAdress);
-            int subnetmaskInBinary = StringToBinary(subnetmask);
+            string ipAdressInBinary = StringToBinary(ipAdress);
+            string subnetmaskInBinary = StringToBinary(subnetmask);
         }
 
-        public int StringToBinary(string stringToConvert)
+        public string StringToBinary(string stringToConvert)
         {
-            string[] splittedIP = splitIpAdressString(stringToConvert);
+            string[] splittedAdress = SplitIpAdressString(stringToConvert);
             ArrayList binaryCode = new ArrayList();
+            
+            string result = "";
 
             try
             {
-                foreach (var item in splittedIP)
+                foreach (var octet in splittedAdress)
                 {
-                    int parsedItem = int.Parse(item);
-                    for(int i = 0; i <= parsedItem; i++){
-                        int result = parsedItem % 2;
-                        binaryCode.Add(result);
+                    int parsedOctet = int.Parse(octet);
+                    string partialResult = "";
+                    for (int i = parsedOctet; i > 0; i/=2){
+                        partialResult += parsedOctet % 2;
+                        parsedOctet /= 2;
                     }
+
+                    partialResult = FillUpWithZeros(partialResult);
+                    partialResult = ReverseString(partialResult);
+                    binaryCode.Add(partialResult);
                 }
-                return int.Parse(reverseList(binaryCode));
+                result = string.Join(".", binaryCode.ToArray());
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Die IP-Adresse hat das falsche Format: {ex}");
             }
             
-            return 0;
+            return result;
         }
 
         public string BinaryToString(int binaryToConvert)
@@ -47,19 +55,23 @@ namespace Service
             return "";
         }
 
-        private string[] splitIpAdressString(string ipAdress){
+        private string[] SplitIpAdressString(string ipAdress){
             string[] splittedString = ipAdress.Split(".");
             return splittedString;
         } 
 
-        private string reverseList(ArrayList listToReverse){
-            string result = "";
-            for (int i = listToReverse.Count; i >= 0; i--)
+        private string ReverseString(string stringToReverse){
+            return new string(stringToReverse.Reverse().ToArray());
+        }
+
+        private string FillUpWithZeros(string stringToFillUp)
+        {
+            for(int i = stringToFillUp.Count(); i < 8; i++)
             {
-                result += listToReverse[i];
+                stringToFillUp += 0;
             }
 
-            return result;
+            return stringToFillUp;
         }
     }
 }

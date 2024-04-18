@@ -1,4 +1,5 @@
 using Service;
+using System.Numerics;
 
 namespace UnitTests
 {
@@ -6,30 +7,37 @@ namespace UnitTests
     public class SubnetCalculatorUnitTest
     {
         [TestMethod]
-        public void StringToBinary_ReturnTrue()
+        public void StringToBinary_IpAdress_ReturnTrue()
         {
             // Arrange
 
             var svc = new SubnetCalculator();
+            string expected = "11000000.10101000.00000001.00000000";
+            string input = "192.168.1.0";
 
             // Act
 
-            int testResult = svc.StringToBinary("6");
+            string testResult = svc.StringToBinary(input);
 
             // Assert
-            Assert.AreEqual(110, testResult);
+            Assert.AreEqual(expected, testResult);
         }
 
         [TestMethod]
-        public void StringToBinary_ReturnFalse()
+        public void StringToBinary_Subnetmask_ReturnTrue()
         {
             // Arrange
 
             var svc = new SubnetCalculator();
+            string expected = "11111111.11111111.11000000.00000000";
+            string input = "255.255.192.0";
 
             // Act
 
+            string testResult = svc.StringToBinary(input);
+
             // Assert
+            Assert.AreEqual(expected, testResult);
         }
 
         [TestMethod]

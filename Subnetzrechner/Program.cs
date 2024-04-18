@@ -1,4 +1,6 @@
-﻿namespace Subnetzrechner
+﻿using Service;
+
+namespace Subnetzrechner
 {
     public class Program
     {
@@ -19,6 +21,8 @@
 
             Console.WriteLine("Anzahl Subnetze:");
             int subnetAmount = int.Parse(Console.ReadLine());
+
+            Console.ReadKey();
         }
     }
 }
