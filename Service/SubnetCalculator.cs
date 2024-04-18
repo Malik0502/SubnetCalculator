@@ -21,8 +21,7 @@ namespace Service
         public string StringToBinary(string stringToConvert)
         {
             string[] splittedAdress = SplitIpAdressString(stringToConvert);
-            ArrayList binaryCode = new ArrayList();
-            
+            ArrayList AdressInBinaryCode = new ArrayList();
             string result = "";
 
             try
@@ -31,6 +30,7 @@ namespace Service
                 {
                     int parsedOctet = int.Parse(octet);
                     string partialResult = "";
+
                     for (int i = parsedOctet; i > 0; i/=2){
                         partialResult += parsedOctet % 2;
                         parsedOctet /= 2;
@@ -38,16 +38,15 @@ namespace Service
 
                     partialResult = FillUpWithZeros(partialResult);
                     partialResult = ReverseString(partialResult);
-                    binaryCode.Add(partialResult);
+                    AdressInBinaryCode.Add(partialResult);
                 }
-                result = string.Join(".", binaryCode.ToArray());
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Die IP-Adresse hat das falsche Format: {ex}");
             }
             
-            return result;
+            return string.Join(".", AdressInBinaryCode.ToArray());
         }
 
         public string BinaryToString(int binaryToConvert)
