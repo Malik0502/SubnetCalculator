@@ -1,4 +1,7 @@
-﻿namespace Service
+﻿using System.Collections;
+using System.Xml.XPath;
+
+namespace Service
 {
     public class SubnetCalculator
     {
@@ -14,13 +17,27 @@
             int subnetmaskInBinary = StringToBinary(subnetmask);
         }
 
-        private void CalculateAvaialbleAsynchSubnets()
-        {
-
-        }
-
         public int StringToBinary(string stringToConvert)
         {
+            string[] splittedIP = splitIpAdressString(stringToConvert);
+            ArrayList binaryCode = new ArrayList();
+
+            try
+            {
+                foreach (var item in splittedIP)
+                {
+                    int parsedItem = int.Parse(item);
+                    for(int i = 0; i <= parsedItem; i++){
+                        int result = parsedItem % 2;
+                        binaryCode.Add(result);
+                    }
+                }
+                return int.Parse(reverseList(binaryCode));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Die IP-Adresse hat das falsche Format: {ex}");
+            }
             
             return 0;
         }
@@ -28,6 +45,21 @@
         public string BinaryToString(int binaryToConvert)
         {
             return "";
+        }
+
+        private string[] splitIpAdressString(string ipAdress){
+            string[] splittedString = ipAdress.Split(".");
+            return splittedString;
+        } 
+
+        private string reverseList(ArrayList listToReverse){
+            string result = "";
+            for (int i = listToReverse.Count; i >= 0; i--)
+            {
+                result += listToReverse[i];
+            }
+
+            return result;
         }
     }
 }

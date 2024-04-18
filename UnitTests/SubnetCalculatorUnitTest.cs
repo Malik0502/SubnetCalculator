@@ -10,11 +10,14 @@ namespace UnitTests
         {
             // Arrange
 
-            var svc = new SubnetCalculator().StringToBinary("192.168.1.0");
+            var svc = new SubnetCalculator();
 
             // Act
 
+            int testResult = svc.StringToBinary("6");
+
             // Assert
+            Assert.AreEqual(110, testResult);
         }
 
         [TestMethod]
@@ -22,7 +25,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var svc = new SubnetCalculator().StringToBinary("192.168.1.0");
+            var svc = new SubnetCalculator();
 
             // Act
 
@@ -34,7 +37,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var svc = new SubnetCalculator().BinaryToString(00000000000000000000000000000000);
+            var svc = new SubnetCalculator();
 
             // Act
 
@@ -46,7 +49,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var svc = new SubnetCalculator().BinaryToString(00000000000000000000000000000000);
+            var svc = new SubnetCalculator();
 
             // Act
 
