@@ -33,6 +33,7 @@ namespace UnitTests
         public void BinaryToString_ReturnTrue()
         {
             // Arrange
+            var svc = new SubnetCalculator().BinaryToString(00000000000000000000000000000000);
 
             // Act
 

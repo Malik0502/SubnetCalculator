@@ -21,6 +21,7 @@
 
         public int StringToBinary(string stringToConvert)
         {
+            
             return 0;
         }
 
