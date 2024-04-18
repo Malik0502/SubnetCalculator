@@ -41,7 +41,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void BinaryToString_ReturnTrue()
+        public void BinaryToString_IpAdress_ReturnTrue()
         {
             // Arrange
 
@@ -53,7 +53,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void BinaryToString_ReturnFalse()
+        public void BinaryToString_Subnetmask_ReturnTrue()
         {
             // Arrange
 
