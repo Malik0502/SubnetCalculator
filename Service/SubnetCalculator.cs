@@ -48,8 +48,6 @@ namespace Service
             return string.Join(".", AdressInBinaryCode.ToArray());
         }
 
-        // Nur Punkt am Ende der umgewandelten Ip-Adresse muss entfernt werden
-        // Am Ende wird fälschlicherweise noch ein . gesetzt
         public string BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
@@ -70,13 +68,14 @@ namespace Service
                     resultOfOctetInDecimal += item.Key * item.Value;
                 }
 
-                if(++counter == conversionTable.Count)
+                if(counter == splittedBinary.Length - 1)
                 {
                     result += resultOfOctetInDecimal; 
                 }
                 else{
                     result += resultOfOctetInDecimal + ".";
                 }
+                counter++;
                 
             }
             return result;

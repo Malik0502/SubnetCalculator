@@ -64,10 +64,15 @@ namespace UnitTests
             // Arrange
 
             var svc = new SubnetCalculator();
+            string expected = "255.192.0.0";
+            string input = "11111111.11000000.00000000.00000000";
 
             // Act
 
+            string testResult = svc.BinaryToString(input);
+
             // Assert
+            Assert.AreEqual(expected, testResult);
         }
     }
 }
