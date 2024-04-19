@@ -22,7 +22,6 @@ namespace Service
         {
             string[] splittedAdress = SplitIpAdressString(stringToConvert);
             ArrayList AdressInBinaryCode = new ArrayList();
-
             try
             {
                 foreach (var octet in splittedAdress)
