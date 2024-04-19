@@ -13,23 +13,32 @@ namespace Subnetzrechner
             // 4. Schritt Wie oft passt die Zahl 2 in die Anzahl der Subnetze (Nur Hochzahl wichtig) bei 8 hätte man 2 hoch 3 (3 ist wichtig)
             // 5. Schritt Anzahl der einsen aus Maske in Binär-Ip überspringen und dann so viele Zahlen anschauen wie hochzahl ist (Wenn Maske = Acht einsen dann schaut man sich ab da die nächsten 3 Werte an)
             // 6. Schritt Diesen Bereich in Binär hochzählen (Bsp. .001 , 010, 011, 100, 101, 110, 111 etc.)
+            try
+            {
+                Console.WriteLine("IP-Adresse");
+                string ipAdressInput = Console.ReadLine();
 
-            // Console.WriteLine("IP-Adresse");
-            // string ipAdress = Console.ReadLine();
+                Console.WriteLine("Subnetzmaske:");
+                string subnetmaskInput = Console.ReadLine();
 
-            // Console.WriteLine("Subnetzmaske:");
-            // string subnetmask = Console.ReadLine();
+                Console.WriteLine("Anzahl Subnetze:");
+                int subnetAmountInput = int.Parse(Console.ReadLine());
 
-            // Console.WriteLine("Anzahl Subnetze:");
-            // int subnetAmount = int.Parse(Console.ReadLine());
+                SubnetEntity inputEntity = new SubnetEntity(){
+                    IPAdress = ipAdressInput,
+                    SubnetMask = subnetmaskInput,
+                    SubnetAmount = subnetAmountInput
+                };
 
-            // if (ipAdress is not null && subnetmask is not null)
-            // {
-            //     new SubnetCalculator().ShowAvailableSubnets(ipAdress, subnetmask, subnetAmount);
-            // }
-            // Console.ReadKey();
-
-            new SubnetCalculator().BinaryToString("11000000.10101000.00000001.00000000");
+                    new SubnetCalculator().ShowAvailableSubnets(inputEntity);
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Bitte überprüfen Sie ihre Werte");
+                Console.WriteLine($"Fehlercode: {ex}");
+            }
+            
         }
     }
 }

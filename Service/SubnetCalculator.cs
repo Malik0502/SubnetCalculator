@@ -1,22 +1,23 @@
 ﻿using System.Collections;
-using System.Globalization;
-using System.Numerics;
-using System.Xml.XPath;
 
 namespace Service
 {
     public class SubnetCalculator
     {
-        public void ShowAvailableSubnets(string ipAdress, string subnetmask, int subnetAmount)
+        public void ShowAvailableSubnets(SubnetEntity inputEntity)
         {
-
+            foreach (var item in CalculateAvailableSubnets(inputEntity))
+            {
+                
+            }
         }
 
 
-        private void CalculateAvailableSubnets(string ipAdress, string subnetmask, int subnetAmount)
+        private ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
-            string ipAdressInBinary = StringToBinaryString(ipAdress);
-            string subnetmaskInBinary = StringToBinaryString(subnetmask);
+            string ipAdressInBinary = StringToBinaryString(inputEntity.IPAdress);
+            string subnetmaskInBinary = StringToBinaryString(inputEntity.SubnetMask);
+            return null;
         }
 
         public string StringToBinaryString(string stringToConvert)
