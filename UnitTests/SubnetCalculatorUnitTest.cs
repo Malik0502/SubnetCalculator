@@ -46,12 +46,12 @@ namespace UnitTests
             // Arrange
 
             var svc = new SubnetCalculator();
-            int expected = 192;
-            string input = "11000000";
+            string expected = "192.168.1.0";
+            string input = "11000000.10101000.00000001.00000000";
 
             // Act
 
-            int testResult = svc.BinaryToString(input);
+            string testResult = svc.BinaryToString(input);
 
             // Assert
 

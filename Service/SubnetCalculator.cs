@@ -57,12 +57,16 @@ namespace Service
         // Methode wurde zum Testen von string zu int geändert
         // UnitTest ist erfolgreich (11000000 wurde korrekterweise zu 192)
         // Jetzt fehlen nur noch die restlichen Oktetten.
-        public int BinaryToString(string binaryToConvert)
+        public string BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
-            int result = 0;
+            int resultOfOctetInDecimal = 0;
+            string result = "";
+            int counter = 0;
+
             foreach (string octet in splittedBinary)
             {
+                resultOfOctetInDecimal = 0;
                 Dictionary<int, int> conversionTable = new Dictionary<int, int>();
                 
                 char[] singleNumsFromOctet = octet.ToCharArray();
@@ -70,8 +74,17 @@ namespace Service
 
                 foreach (var item in conversionTable)
                 {
-                    result += item.Key * item.Value;
+                    resultOfOctetInDecimal += item.Key * item.Value;
                 }
+
+                if(++counter == conversionTable.Count)
+                {
+                    result += resultOfOctetInDecimal; 
+                }
+                else{
+                    result += resultOfOctetInDecimal + ".";
+                }
+                
             }
             return result;
         }

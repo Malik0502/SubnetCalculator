@@ -14,20 +14,22 @@ namespace Subnetzrechner
             // 5. Schritt Anzahl der einsen aus Maske in Binär-Ip überspringen und dann so viele Zahlen anschauen wie hochzahl ist (Wenn Maske = Acht einsen dann schaut man sich ab da die nächsten 3 Werte an)
             // 6. Schritt Diesen Bereich in Binär hochzählen (Bsp. .001 , 010, 011, 100, 101, 110, 111 etc.)
 
-            Console.WriteLine("IP-Adresse");
-            string ipAdress = Console.ReadLine();
+            // Console.WriteLine("IP-Adresse");
+            // string ipAdress = Console.ReadLine();
 
-            Console.WriteLine("Subnetzmaske:");
-            string subnetmask = Console.ReadLine();
+            // Console.WriteLine("Subnetzmaske:");
+            // string subnetmask = Console.ReadLine();
 
-            Console.WriteLine("Anzahl Subnetze:");
-            int subnetAmount = int.Parse(Console.ReadLine());
+            // Console.WriteLine("Anzahl Subnetze:");
+            // int subnetAmount = int.Parse(Console.ReadLine());
 
-            if (ipAdress is not null && subnetmask is not null)
-            {
-                new SubnetCalculator().ShowAvailableSubnets(ipAdress, subnetmask, subnetAmount);
-            }
-            Console.ReadKey();
+            // if (ipAdress is not null && subnetmask is not null)
+            // {
+            //     new SubnetCalculator().ShowAvailableSubnets(ipAdress, subnetmask, subnetAmount);
+            // }
+            // Console.ReadKey();
+
+            new SubnetCalculator().BinaryToString("11000000.10101000.00000001.00000000");
         }
     }
 }
