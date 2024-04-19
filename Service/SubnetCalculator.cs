@@ -53,8 +53,11 @@ namespace Service
         // Dort werden die acht Zahlen einzeln gespeichert
         // Diese werden dann in einem Dicitonary von 128 bis 1 gespeichert
         // Gerade angefangen Berechnung von Binär zu machen
-        // Result += Key * Value (Sollte zur Zahl werden. Konnte noch nicht getestet werden)
-        public string BinaryToString(string binaryToConvert)
+        // Result += Key * Value (Sollte zur Zahl werden)
+        // Methode wurde zum Testen von string zu int geändert
+        // UnitTest ist erfolgreich (11000000 wurde korrekterweise zu 192)
+        // Jetzt fehlen nur noch die restlichen Oktetten.
+        public int BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
             int result = 0;
@@ -70,7 +73,7 @@ namespace Service
                     result += item.Key * item.Value;
                 }
             }
-            return "";
+            return result;
         }
 
         private string[] SplitString(string ipAdress){

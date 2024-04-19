@@ -46,10 +46,16 @@ namespace UnitTests
             // Arrange
 
             var svc = new SubnetCalculator();
+            int expected = 192;
+            string input = "11000000";
 
             // Act
 
+            int testResult = svc.BinaryToString(input);
+
             // Assert
+
+            Assert.AreEqual(expected, testResult);
         }
 
         [TestMethod]
