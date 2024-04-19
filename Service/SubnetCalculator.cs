@@ -48,15 +48,8 @@ namespace Service
             return string.Join(".", AdressInBinaryCode.ToArray());
         }
 
-        // Nicht fertig
-        // Bis jetzt wird eins der 4 Oktette genommen.
-        // Dort werden die acht Zahlen einzeln gespeichert
-        // Diese werden dann in einem Dicitonary von 128 bis 1 gespeichert
-        // Gerade angefangen Berechnung von Binär zu machen
-        // Result += Key * Value (Sollte zur Zahl werden)
-        // Methode wurde zum Testen von string zu int geändert
-        // UnitTest ist erfolgreich (11000000 wurde korrekterweise zu 192)
-        // Jetzt fehlen nur noch die restlichen Oktetten.
+        // Nur Punkt am Ende der umgewandelten Ip-Adresse muss entfernt werden
+        // Am Ende wird fälschlicherweise noch ein . gesetzt
         public string BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
