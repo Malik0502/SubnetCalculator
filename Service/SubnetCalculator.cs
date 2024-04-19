@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Globalization;
 using System.Numerics;
 using System.Xml.XPath;
 
@@ -47,8 +48,28 @@ namespace Service
             return string.Join(".", AdressInBinaryCode.ToArray());
         }
 
-        public string BinaryToString(int binaryToConvert)
+        // Nicht fertig
+        // Bis jetzt wird eins der 4 Oktette genommen.
+        // Dort werden die acht Zahlen einzeln gespeichert
+        // Diese werden dann in einem Dicitonary von 128 bis 1 gespeichert
+        // Gerade angefangen Berechnung von Binär zu machen
+        // Result += Key * Value (Sollte zur Zahl werden. Konnte noch nicht getestet werden)
+        public string BinaryToString(string binaryToConvert)
         {
+            string[] splittedBinary = SplitString(binaryToConvert);
+            int result = 0;
+            foreach (string octet in splittedBinary)
+            {
+                Dictionary<int, int> conversionTable = new Dictionary<int, int>();
+                
+                char[] singleNumsFromOctet = octet.ToCharArray();
+                CharToInt(singleNumsFromOctet, conversionTable);
+
+                foreach (var item in conversionTable)
+                {
+                    result += item.Key * item.Value;
+                }
+            }
             return "";
         }
 
@@ -69,6 +90,18 @@ namespace Service
             }
 
             return stringToFillUp;
+        }
+
+        private void CharToInt(char[] charToConvert, Dictionary<int, int> conversionTable){
+            int bitCounter = 128;
+            int num = 0;
+            foreach (var numAsChar in charToConvert)
+            {
+                string charToString = numAsChar.ToString();
+                num = int.Parse(charToString);
+                conversionTable.Add(bitCounter, num);
+                bitCounter /= 2;
+            }
         }
     }
 }

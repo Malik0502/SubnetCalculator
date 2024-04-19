@@ -17,7 +17,7 @@ namespace UnitTests
 
             // Act
 
-            string testResult = svc.StringToBinary(input);
+            string testResult = svc.StringToBinaryString(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -34,7 +34,7 @@ namespace UnitTests
 
             // Act
 
-            string testResult = svc.StringToBinary(input);
+            string testResult = svc.StringToBinaryString(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
