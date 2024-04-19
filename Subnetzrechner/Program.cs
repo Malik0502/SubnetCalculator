@@ -23,6 +23,10 @@ namespace Subnetzrechner
             Console.WriteLine("Anzahl Subnetze:");
             int subnetAmount = int.Parse(Console.ReadLine());
 
+            if (ipAdress is not null && subnetmask is not null)
+            {
+                new SubnetCalculator().ShowAvailableSubnets(ipAdress, subnetmask, subnetAmount);
+            }
             Console.ReadKey();
         }
     }

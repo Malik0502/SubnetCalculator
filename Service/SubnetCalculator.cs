@@ -14,13 +14,13 @@ namespace Service
 
         private void CalculateAvailableSubnets(string ipAdress, string subnetmask, int subnetAmount)
         {
-            string ipAdressInBinary = StringToBinary(ipAdress);
-            string subnetmaskInBinary = StringToBinary(subnetmask);
+            string ipAdressInBinary = StringToBinaryString(ipAdress);
+            string subnetmaskInBinary = StringToBinaryString(subnetmask);
         }
 
-        public string StringToBinary(string stringToConvert)
+        public string StringToBinaryString(string stringToConvert)
         {
-            string[] splittedAdress = SplitIpAdressString(stringToConvert);
+            string[] splittedAdress = SplitString(stringToConvert);
             ArrayList AdressInBinaryCode = new ArrayList();
             try
             {
@@ -52,7 +52,7 @@ namespace Service
             return "";
         }
 
-        private string[] SplitIpAdressString(string ipAdress){
+        private string[] SplitString(string ipAdress){
             string[] splittedString = ipAdress.Split(".");
             return splittedString;
         } 
