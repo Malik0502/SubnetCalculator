@@ -5,13 +5,11 @@ namespace Service
     public class SubnetEntity{
 
         [Required]
-        [MaxLength(15)]
-        [MinLength(7)]
+        [StringLength(15, ErrorMessage ="Die Ip-Adresse war zu kurz/ zu lang")]
         public string? IPAdress {get; set;}
 
         [Required]
-        [MaxLength(15)]
-        [MinLength(7)]
+        [StringLength(15, ErrorMessage ="Die Subnetzmaske war zu kurz/ zu lang")]
         public string? SubnetMask {get; set;}
 
         [Required]

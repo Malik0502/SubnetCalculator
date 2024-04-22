@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace Service
 {
@@ -6,34 +7,47 @@ namespace Service
     {
         public void ShowAvailableSubnets(SubnetEntity inputEntity)
         {
-            foreach (var item in CalculateAvailableSubnets(inputEntity))
+            if (ValidateUserInput(inputEntity))
             {
+                foreach (var item in CalculateAvailableSubnets(inputEntity))
+                {
 
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ihre Eingaben haben das falsche Format");
             }
         }
 
 
-        public ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
+        private ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
-            string ipAdressInBinary = StringToBinaryString(inputEntity.IPAdress);
-            string subnetmaskInBinary = StringToBinaryString(inputEntity.SubnetMask);
-            int zeroAmountMask = CountOnesInSubnetMask(subnetmaskInBinary);
+            string? ipAdressInBinary = StringToBinaryString(inputEntity.IPAdress);
+            string? subnetmaskInBinary = StringToBinaryString(inputEntity.SubnetMask);
+            int amountOnesInMask = CountOnesInSubnetMask(subnetmaskInBinary);
             return null;
         }
 
         private int CountOnesInSubnetMask(string subnetmaskInBinary)
         {
             char[] subnetmaskAsChars =  StringToCharArray(subnetmaskInBinary);
-            ArrayList singleSubnetmaskEntriesAsInt = new ArrayList();
             int counter = 0;
             foreach (var binaryNum in subnetmaskAsChars)
             {
-                int binaryNumAsInt = charToInt(binaryNum);
+                int binaryNumAsInt = CharToInt(binaryNum);
                 if (binaryNumAsInt == 1) {
                     counter++;
                 };
             }
             return counter;
+        }
+
+        private string ANDOperation(string ipAdressBinary, string subnetMaskBinary)
+        {
+            string resultOfAND = "";
+
+            return resultOfAND;
         }
 
         public string StringToBinaryString(string stringToConvert)
@@ -78,7 +92,7 @@ namespace Service
                 Dictionary<int, int> conversionTable = new Dictionary<int, int>();
                 
                 char[] singleNumsFromOctet = octet.ToCharArray();
-                AddCharToIntToDictionary(singleNumsFromOctet, conversionTable);
+                AddConvertedCharToDic(singleNumsFromOctet, conversionTable);
 
                 foreach (var item in conversionTable)
                 {
@@ -117,7 +131,7 @@ namespace Service
             return stringToFillUp;
         }
 
-        private void AddCharToIntToDictionary(char[] charToConvert, Dictionary<int, int> conversionTable){
+        private void AddConvertedCharToDic(char[] charToConvert, Dictionary<int, int> conversionTable){
             int bitCounter = 128;
             int num = 0;
             foreach (var numAsChar in charToConvert)
@@ -141,10 +155,27 @@ namespace Service
             return chars;
         }
 
-        private int charToInt(char charToConvert)
+        private int CharToInt(char charToConvert)
         {
             int convertedChar = Convert.ToInt32(charToConvert);
             return convertedChar;
         }
+
+        private bool ValidateUserInput(SubnetEntity inputEntity)
+        {
+            int inputIpAdressLength = inputEntity.IPAdress.Length;
+            int inputSubnetmaskLength = inputEntity.SubnetMask.Length;
+
+            if (inputIpAdressLength > 15 || inputIpAdressLength < 7 || inputSubnetmaskLength > 15 || inputSubnetmaskLength < 7)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
     }
 }

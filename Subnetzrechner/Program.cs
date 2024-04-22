@@ -6,8 +6,8 @@ namespace Subnetzrechner
     {
         static void Main(string[] args)
         {
-            // 1. Schritt Ip-Adresse und Subnetzmaske in Binär
-            // 2. Schritt Wie viele einsen in Maske (muss gespeichert werden)
+            // 1. Schritt Ip-Adresse und Subnetzmaske in Binär - X
+            // 2. Schritt Wie viele einsen in Maske (muss gespeichert werden) - X
             // 3. Schritt Vergleich Ip Adresse mit Subnetzmaske (Wenn Beide an gleicher Stelle 1 dann 1 sonst null hinschreiben) = Erstes Subnetz
             // 3. Schritt auch genannt als AND Operation von Ip Adresse und Subnetzmaske
             // 4. Schritt Wie oft passt die Zahl 2 in die Anzahl der Subnetze (Nur Hochzahl wichtig) bei 8 hätte man 2 hoch 3 (3 ist wichtig)
@@ -16,15 +16,15 @@ namespace Subnetzrechner
             try
             {
                 Console.WriteLine("IP-Adresse");
-                string ipAdressInput = Console.ReadLine();
+                string? ipAdressInput = Console.ReadLine();
 
                 Console.WriteLine("Subnetzmaske:");
-                string subnetmaskInput = Console.ReadLine();
+                string? subnetmaskInput = Console.ReadLine();
 
                 Console.WriteLine("Anzahl Subnetze:");
                 int subnetAmountInput = int.Parse(Console.ReadLine());
 
-                SubnetEntity inputEntity = new SubnetEntity(){
+                SubnetEntity inputEntity = new(){
                     IPAdress = ipAdressInput,
                     SubnetMask = subnetmaskInput,
                     SubnetAmount = subnetAmountInput
