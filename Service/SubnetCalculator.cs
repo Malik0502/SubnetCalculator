@@ -8,16 +8,32 @@ namespace Service
         {
             foreach (var item in CalculateAvailableSubnets(inputEntity))
             {
-                
+
             }
         }
 
 
-        private ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
+        public ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
             string ipAdressInBinary = StringToBinaryString(inputEntity.IPAdress);
             string subnetmaskInBinary = StringToBinaryString(inputEntity.SubnetMask);
+            int zeroAmountMask = CountOnesInSubnetMask(subnetmaskInBinary);
             return null;
+        }
+
+        private int CountOnesInSubnetMask(string subnetmaskInBinary)
+        {
+            char[] subnetmaskAsChars =  StringToCharArray(subnetmaskInBinary);
+            ArrayList singleSubnetmaskEntriesAsInt = new ArrayList();
+            int counter = 0;
+            foreach (var binaryNum in subnetmaskAsChars)
+            {
+                int binaryNumAsInt = charToInt(binaryNum);
+                if (binaryNumAsInt == 1) {
+                    counter++;
+                };
+            }
+            return counter;
         }
 
         public string StringToBinaryString(string stringToConvert)
@@ -62,7 +78,7 @@ namespace Service
                 Dictionary<int, int> conversionTable = new Dictionary<int, int>();
                 
                 char[] singleNumsFromOctet = octet.ToCharArray();
-                CharToInt(singleNumsFromOctet, conversionTable);
+                AddCharToIntToDictionary(singleNumsFromOctet, conversionTable);
 
                 foreach (var item in conversionTable)
                 {
@@ -101,7 +117,7 @@ namespace Service
             return stringToFillUp;
         }
 
-        private void CharToInt(char[] charToConvert, Dictionary<int, int> conversionTable){
+        private void AddCharToIntToDictionary(char[] charToConvert, Dictionary<int, int> conversionTable){
             int bitCounter = 128;
             int num = 0;
             foreach (var numAsChar in charToConvert)
@@ -111,6 +127,24 @@ namespace Service
                 conversionTable.Add(bitCounter, num);
                 bitCounter /= 2;
             }
+        }
+
+        public char[] StringToCharArray(string StringToConvert)
+        {
+            string[] splittedString = SplitString(StringToConvert);
+            char[] chars = { };
+            foreach (var item in splittedString)
+            {
+                chars = item.ToCharArray();
+            }
+           
+            return chars;
+        }
+
+        private int charToInt(char charToConvert)
+        {
+            int convertedChar = Convert.ToInt32(charToConvert);
+            return convertedChar;
         }
     }
 }
