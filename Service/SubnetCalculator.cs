@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace Service
@@ -23,15 +24,16 @@ namespace Service
 
         private ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
-            string? ipAdressInBinary = StringToBinaryString(inputEntity.IPAdress);
-            string? subnetmaskInBinary = StringToBinaryString(inputEntity.SubnetMask);
-            int amountOnesInMask = CountOnesInSubnetMask(subnetmaskInBinary);
+            string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
+            string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
+            int amountOnesInMask = CountOnesInSubnetMask(subnetmaskBinary);
+            string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             return null;
         }
 
-        private int CountOnesInSubnetMask(string subnetmaskInBinary)
+        private int CountOnesInSubnetMask(string subnetmaskBinary)
         {
-            char[] subnetmaskAsChars =  StringToCharArray(subnetmaskInBinary);
+            char[] subnetmaskAsChars =  StringToCharArray(subnetmaskBinary);
             int counter = 0;
             foreach (var binaryNum in subnetmaskAsChars)
             {
@@ -43,10 +45,43 @@ namespace Service
             return counter;
         }
 
-        private string ANDOperation(string ipAdressBinary, string subnetMaskBinary)
+        public string CalcNetworkAdressBinary(string ipAdressBinary, string subnetMaskBinary)
         {
             string resultOfAND = "";
+            string partialResultOfAND = "";
+            int tableCounter = 0;
 
+            string[] splittedIpAdressBinary = SplitString(ipAdressBinary);
+            string[] splittedSubnetmaskBinary = SplitString(subnetMaskBinary);
+
+            for(int i = 0; i < splittedSubnetmaskBinary.Length; i++)
+            {
+                
+                char[] singleNumsSubnet = splittedSubnetmaskBinary[i].ToCharArray();
+                char[] singleNumsIP = splittedIpAdressBinary[i].ToCharArray();
+                partialResultOfAND = "";
+
+                for(int j = 0; j < singleNumsSubnet.Length; j++)
+                {
+                    if ((singleNumsSubnet[j] & singleNumsIP[j]) == '1')
+                    {
+                        partialResultOfAND += "1";
+                    }
+                    else
+                    {
+                        partialResultOfAND += "0";
+                    }
+                }
+                if (tableCounter == splittedSubnetmaskBinary.Length - 1)
+                {
+                    resultOfAND += partialResultOfAND;
+                }
+                else
+                {
+                    resultOfAND += partialResultOfAND + ".";
+                }
+                tableCounter++;
+            }
             return resultOfAND;
         }
 
@@ -133,7 +168,7 @@ namespace Service
 
         private void AddConvertedCharToDic(char[] charToConvert, Dictionary<int, int> conversionTable){
             int bitCounter = 128;
-            int num = 0;
+            int num;
             foreach (var numAsChar in charToConvert)
             {
                 string charToString = numAsChar.ToString();
@@ -175,7 +210,5 @@ namespace Service
                 return true;
             }
         }
-
-
     }
 }
