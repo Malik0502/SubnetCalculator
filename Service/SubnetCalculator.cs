@@ -6,6 +6,7 @@ namespace Service
 {
     public class SubnetCalculator
     {
+        // Zeigt alle Subnetze an, die berechnet werden
         public void ShowAvailableSubnets(SubnetEntity inputEntity)
         {
             if (ValidateUserInput(inputEntity))
@@ -21,7 +22,7 @@ namespace Service
             }
         }
 
-
+        // Berechnet alle Subnetze mithilfe der User Inputs und speichert diese in einer ArrayList
         private ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
@@ -31,6 +32,7 @@ namespace Service
             return null;
         }
 
+        // Zählt die einsen in der Subnetzmaske um später die Anzahl an Stellen in der Netzwerkadresse zu überspringen
         private int CountOnesInSubnetMask(string subnetmaskBinary)
         {
             char[] subnetmaskAsChars =  StringToCharArray(subnetmaskBinary);
@@ -45,6 +47,7 @@ namespace Service
             return counter;
         }
 
+        // Berechnet die Netzwerkadresse mithilfe einer AND Operation und gibt diese als Binärstring aus
         public string CalcNetworkAdressBinary(string ipAdressBinary, string subnetMaskBinary)
         {
             string resultOfAND = "";
@@ -56,7 +59,6 @@ namespace Service
 
             for(int i = 0; i < splittedSubnetmaskBinary.Length; i++)
             {
-                
                 char[] singleNumsSubnet = splittedSubnetmaskBinary[i].ToCharArray();
                 char[] singleNumsIP = splittedIpAdressBinary[i].ToCharArray();
                 partialResultOfAND = "";
@@ -85,6 +87,7 @@ namespace Service
             return resultOfAND;
         }
 
+        // Nimmt einen String als Eingabe und gibt einen String in Form von Binärcode zurück
         public string StringToBinaryString(string stringToConvert)
         {
             string[] splittedAdress = SplitString(stringToConvert);
@@ -114,6 +117,7 @@ namespace Service
             return string.Join(".", AdressInBinaryCode.ToArray());
         }
 
+        // Nimmt einen String im Binärformat und konvertiert diesen zu String im Dezimalformat
         public string BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
@@ -147,15 +151,18 @@ namespace Service
             return result;
         }
 
+        // Teilt einen String auf um die Punkte bei der IP wegzubekommen
         private string[] SplitString(string ipAdress){
             string[] splittedString = ipAdress.Split(".");
             return splittedString;
         } 
 
+        // Nimmt einen String und dreht diesen um
         private string ReverseString(string stringToReverse){
             return new string(stringToReverse.Reverse().ToArray());
         }
 
+        // Füllt den String mit Nullen um Binärformat zu bekommen
         private string FillUpWithZeros(string stringToFillUp)
         {
             for(int i = stringToFillUp.Count(); i < 8; i++)
@@ -166,6 +173,7 @@ namespace Service
             return stringToFillUp;
         }
 
+        // Fügt die einzelnen Chars von einem Oktet String in ein Dictionary dessen Key Values für die Umrechnung von Binär zu Dezimal verwendet werden
         private void AddConvertedCharToDic(char[] charToConvert, Dictionary<int, int> conversionTable){
             int bitCounter = 128;
             int num;
@@ -178,6 +186,7 @@ namespace Service
             }
         }
 
+        // Konvertiert einen string zu einem Array aus Chars
         public char[] StringToCharArray(string StringToConvert)
         {
             string[] splittedString = SplitString(StringToConvert);
@@ -190,12 +199,14 @@ namespace Service
             return chars;
         }
 
+        // Konvertiert Chars zu Integer
         private int CharToInt(char charToConvert)
         {
             int convertedChar = Convert.ToInt32(charToConvert);
             return convertedChar;
         }
 
+        // Prüft ob die Eingaben des Nutzers die geeignete Länge für eine Mögliche Ip Adresse bzw. Subnetzmaske hat
         private bool ValidateUserInput(SubnetEntity inputEntity)
         {
             int inputIpAdressLength = inputEntity.IPAdress.Length;
