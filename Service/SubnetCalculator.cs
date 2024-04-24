@@ -26,7 +26,7 @@ namespace Service
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
             string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
-            // int logOfAmountSubnets = CalcLogarithmus(inputEntity.SubnetAmount);
+            double logOfAmountSubnets = CalcLogarithmus(inputEntity.SubnetAmount);
             int amountOnesInMask = CountOnesInSubnetMask(subnetmaskBinary);
             string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             return null;
