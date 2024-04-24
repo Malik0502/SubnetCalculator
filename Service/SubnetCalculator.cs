@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Numerics;
 
 namespace Service
 {
@@ -27,6 +26,7 @@ namespace Service
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
             string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
+            // int logOfAmountSubnets = CalcLogarithmus(inputEntity.SubnetAmount);
             int amountOnesInMask = CountOnesInSubnetMask(subnetmaskBinary);
             string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             return null;
@@ -85,6 +85,12 @@ namespace Service
                 tableCounter++;
             }
             return resultOfAND;
+        }
+
+        public double CalcLogarithmus(int subnetAmount){
+            double amountOfSubnets = Convert.ToInt32(subnetAmount);
+            amountOfSubnets = Math.Log2(amountOfSubnets);
+            return amountOfSubnets;
         }
 
         // Nimmt einen String als Eingabe und gibt einen String in Form von Binärcode zurück

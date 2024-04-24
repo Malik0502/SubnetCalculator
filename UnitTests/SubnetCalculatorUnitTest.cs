@@ -165,6 +165,8 @@ namespace UnitTests
         [TestMethod]
         public void CalNetworkAdress_ReturnFalse()
         {
+
+            // Arrange
             var svc = new SubnetCalculator();
             string expected = "00001000.00001000.00001000.00100100";
             string inputIp = "00001000.00001000.00001000.00001000";
@@ -177,6 +179,22 @@ namespace UnitTests
             // Assert
 
             Assert.AreNotEqual(expected, testResult);
+        }
+
+        [TestMethod]
+        public void CalcLogarithmus_ReturnFalse(){
+            // Arrange
+            var svc = new SubnetCalculator();
+            double expected = 3;
+            int input = 8;
+
+            // Act
+
+            double testResult = svc.CalcLogarithmus(input);
+
+            // Assert
+
+            Assert.AreEqual(expected, testResult);
         }
     }
 }
