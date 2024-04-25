@@ -34,7 +34,8 @@ namespace Subnetzrechner
                     SubnetAmount = subnetAmountInput
                 };
 
-                    new SubnetCalculator().CalculateAvailableSubnets(inputEntity);
+                new SubnetCalculator().ShowAvailableSubnets(inputEntity);
+                
                 Console.ReadKey();
             }
             catch (Exception ex)

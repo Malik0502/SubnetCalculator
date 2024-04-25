@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Globalization;
 using System.Numerics;
 
 namespace Service
@@ -12,7 +13,7 @@ namespace Service
             {
                 foreach (var item in CalculateAvailableSubnets(inputEntity))
                 {
-
+                    Console.WriteLine(item);
                 }
             }
             else
@@ -26,6 +27,7 @@ namespace Service
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
             string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
+            int subnetAmount = inputEntity.SubnetAmount;
             string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             double logOfAmountSubnets = CalcLogarithmus(inputEntity.SubnetAmount);
             int amountOnesInMask = CountOnesInSubnetMask(subnetmaskBinary);
@@ -34,39 +36,54 @@ namespace Service
             ArrayList subnets = new();
             subnets.Add(networkAdressBinary);
 
-            for (int j = 0; j < amountOnesInMask; j++)
+            for (int i = 0; i < subnetAmount - 1; i++)
             {
-                if(j % 8 == 0){
-                    subnet += singleNumsNetworkAdress[j] + ".";
+                int j;
+                for (j = 0; j < amountOnesInMask; j++)
+                {
+                    if(j % 8 == 0){
+                        subnet += singleNumsNetworkAdress[j] + ".";
+                    }
+                    else{
+                        subnet += singleNumsNetworkAdress[j];
+                    }
+                }
+                
+                string binary = Convert.ToString(i, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0'); // Konvertiere die Zahl in Binär und füge führende Nullen hinzu
+
+                if((j - singleNumsNetworkAdress.Length) % 8 == 0){
+                    subnet += binary + ".";
                 }
                 else{
-                    subnet += singleNumsNetworkAdress[j];
+                    subnet += binary;
                 }
+
+                for (int k = amountOnesInMask + Convert.ToInt32(logOfAmountSubnets); k < singleNumsNetworkAdress.Length; k++)
+                {
+                    if(k % 8 == 0){
+                        subnet += singleNumsNetworkAdress[k] + ".";
+                    }
+                    else{
+                        subnet += singleNumsNetworkAdress[k];
+                    }
+                }
+                subnets.Add(subnet);
+                subnet = "";
             }
 
-            int countTo = (int)Math.Pow(2, logOfAmountSubnets); // Anzahl der Zahlen, die im Binärsystem gezählt werden sollen
-
-            for (int i = 0; i < countTo; i++)
-            {
-                string binary = Convert.ToString(i, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0'); // Konvertiere die Zahl in Binär und füge führende Nullen hinzu
-                Console.WriteLine(binary);
-            }
-
-
-            return null;
+            return subnets;
         }
 
         // Zählt die einsen in der Subnetzmaske um später die Anzahl an Stellen in der Netzwerkadresse zu überspringen
         private int CountOnesInSubnetMask(string subnetmaskBinary)
         {
-            char[] subnetmaskAsChars =  StringToCharArray(subnetmaskBinary);
+            char[] subnetmaskAsChars = StringToCharArray(subnetmaskBinary);
             int counter = 0;
             foreach (var binaryNum in subnetmaskAsChars)
             {
-                int binaryNumAsInt = CharToInt(binaryNum);
-                if (binaryNumAsInt == 1) {
+                if (binaryNum == '1') {
                     counter++;
-                };
+                }
             }
             return counter;
         }
@@ -220,20 +237,15 @@ namespace Service
         public char[] StringToCharArray(string StringToConvert)
         {
             string[] splittedString = SplitString(StringToConvert);
-            char[] chars = { };
-            foreach (var item in splittedString)
-            {
-                chars = item.ToCharArray();
-            }
-           
-            return chars;
-        }
+            char[] chars = new char[32];
 
-        // Konvertiert Chars zu Integer
-        private int CharToInt(char charToConvert)
-        {
-            int convertedChar = Convert.ToInt32(charToConvert);
-            return convertedChar;
+            for (int i = 0; i < splittedString.Length; i++)
+            {
+                char[] splittedStringAsCharArray = splittedString[i].ToCharArray();
+                splittedStringAsCharArray.CopyTo(chars, splittedStringAsCharArray.Length * i);
+            }
+
+            return chars;
         }
 
         // Prüft ob die Eingaben des Nutzers die geeignete Länge für eine Mögliche Ip Adresse bzw. Subnetzmaske hat
@@ -253,12 +265,15 @@ namespace Service
         }
 
         private char[] splittedStringAsCharArray(string splittedString){
-            char[] stringAsChar = {};
+            char[] stringAsChar = new char[32];
             string[] splitString = SplitString(splittedString);
-            foreach (var octet in splitString)
+            
+            for (int i = 0; i < splittedString.Length; i++)
             {
-                stringAsChar = octet.ToCharArray(); 
+                char[] splittedStringAsCharArray = splitString[i].ToCharArray();
+                splittedStringAsCharArray.CopyTo(stringAsChar, splittedStringAsCharArray.Length * i);
             }
+
             return stringAsChar;
         }
     }
