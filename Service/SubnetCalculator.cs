@@ -54,7 +54,7 @@ namespace Service
                 char[] binaryAsChar = binary.ToCharArray();
                 foreach (var item in binaryAsChar)
                 {
-                    if ((singleNumsNetworkAdress.Length - (j - 1)) % 8 == 0)
+                    if ((singleNumsNetworkAdress.Length - j) % 8 == 0)
                     {
                         subnet += item + ".";
                     }
