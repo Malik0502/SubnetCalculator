@@ -23,6 +23,8 @@ namespace Service
         }
 
         // Berechnet alle Subnetze mithilfe der User Inputs und speichert diese in einer ArrayList
+        // Fehler ist in einer der For-Schleifen
+        // Die Ip Adressen werden einen verschoben ausgegeben. Nach dem ersten Wert kommt direkt ein Punkt.
         public ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
@@ -268,7 +270,7 @@ namespace Service
             char[] stringAsChar = new char[32];
             string[] splitString = SplitString(splittedString);
             
-            for (int i = 0; i < splittedString.Length; i++)
+            for (int i = 0; i < splitString.Length; i++)
             {
                 char[] splittedStringAsCharArray = splitString[i].ToCharArray();
                 splittedStringAsCharArray.CopyTo(stringAsChar, splittedStringAsCharArray.Length * i);
