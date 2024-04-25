@@ -13,7 +13,8 @@ namespace Service
             {
                 foreach (var item in CalculateAvailableSubnets(inputEntity))
                 {
-                    Console.WriteLine(item);
+                    string itemAsDecimal = BinaryToString(item);
+                    Console.WriteLine(itemAsDecimal);
                 }
             }
             else
@@ -22,42 +23,46 @@ namespace Service
             }
         }
 
-        // Berechnet alle Subnetze mithilfe der User Inputs und speichert diese in einer ArrayList
-        // Fehler ist in einer der For-Schleifen
-        // Die Ip Adressen werden einen verschoben ausgegeben. Nach dem ersten Wert kommt direkt ein Punkt.
-        public ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
+        public List<string> CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
             string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
             int subnetAmount = inputEntity.SubnetAmount;
             string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
-            double logOfAmountSubnets = CalcLogarithmus(inputEntity.SubnetAmount);
+            double logOfAmountSubnets = Math.Ceiling(CalcLogarithmus(inputEntity.SubnetAmount));
             int amountOnesInMask = CountOnesInSubnetMask(subnetmaskBinary);
             char[] singleNumsNetworkAdress = splittedStringAsCharArray(networkAdressBinary);
             string subnet = "";
-            ArrayList subnets = new();
-            subnets.Add(networkAdressBinary);
+            List<string> subnets = new();
 
-            for (int i = 0; i < subnetAmount - 1; i++)
+            for (int i = 0; i < subnetAmount; i++)
             {
                 int j;
-                for (j = 0; j < amountOnesInMask; j++)
+                for (j = 1; j - 1 < amountOnesInMask; j++)
                 {
                     if(j % 8 == 0){
-                        subnet += singleNumsNetworkAdress[j] + ".";
+                        subnet += singleNumsNetworkAdress[j - 1] + ".";
                     }
                     else{
-                        subnet += singleNumsNetworkAdress[j];
+                        subnet += singleNumsNetworkAdress[j - 1];
                     }
                 }
                 
-                string binary = Convert.ToString(i, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0'); // Konvertiere die Zahl in Binär und füge führende Nullen hinzu
+                
 
-                if((j - singleNumsNetworkAdress.Length) % 8 == 0){
-                    subnet += binary + ".";
-                }
-                else{
-                    subnet += binary;
+                string binary = Convert.ToString(i, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0');
+                char[] binaryAsChar = binary.ToCharArray();
+                foreach (var item in binaryAsChar)
+                {
+                    if ((singleNumsNetworkAdress.Length - (j - 1)) % 8 == 0)
+                    {
+                        subnet += item + ".";
+                    }
+                    else
+                    {
+                        subnet += item;
+                    }
+                    j++;
                 }
 
                 for (int k = amountOnesInMask + Convert.ToInt32(logOfAmountSubnets); k < singleNumsNetworkAdress.Length; k++)

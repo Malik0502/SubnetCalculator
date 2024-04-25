@@ -183,6 +183,7 @@ namespace UnitTests
 
         [TestMethod]
         public void CalcLogarithmus_ReturnFalse(){
+            
             // Arrange
             var svc = new SubnetCalculator();
             double expected = 3;
@@ -195,6 +196,106 @@ namespace UnitTests
             // Assert
 
             Assert.AreEqual(expected, testResult);
+        }
+
+        [TestMethod]
+        public void CalcEightAvailableSubnets_ReturnTrue()
+        {
+            // Arrange
+            var svc = new SubnetCalculator();
+            List<string> expected = new List<string>();
+            string inputIp = "192.168.1.0";
+            string inputSubnet = "255.255.255.192";
+            int inputSubnetAmount = 8;
+
+            SubnetEntity inputEntity = new SubnetEntity()
+            {
+                IPAdress = inputIp,
+                SubnetMask = inputSubnet,
+                SubnetAmount = inputSubnetAmount,
+            };
+
+            expected.Add("192.168.1.0");
+            expected.Add("192.168.1.8");
+            expected.Add("192.168.1.16");
+            expected.Add("192.168.1.24");
+            expected.Add("192.168.1.32");
+            expected.Add("192.168.1.40");
+            expected.Add("192.168.1.48");
+            expected.Add("192.168.1.56");
+
+            // Act
+
+            List<string> testResult = svc.CalculateAvailableSubnets(inputEntity);
+
+            // Assert
+
+            for (int i = 0; i < testResult.Count; i++)
+            {
+                Assert.AreEqual(expected[i], svc.BinaryToString(testResult[i]));
+            }
+        }
+
+        [TestMethod]
+        public void CalcThirtyTwoAvailableSubnets_ReturnTrue()
+        {
+            // Arrange
+            var svc = new SubnetCalculator();
+            List<string> expected = new List<string>();
+            string inputIp = "192.168.35.2";
+            string inputSubnet = "255.128.0.0";
+            int inputSubnetAmount = 32;
+
+            SubnetEntity inputEntity = new SubnetEntity()
+            {
+                IPAdress = inputIp,
+                SubnetMask = inputSubnet,
+                SubnetAmount = inputSubnetAmount,
+            };
+
+            expected.Add("192.128.0.0");
+            expected.Add("192.132.0.0");
+            expected.Add("192.136.0.0");
+            expected.Add("192.140.0.0");
+            expected.Add("192.144.0.0");
+            expected.Add("192.148.0.0");
+            expected.Add("192.152.0.0");
+            expected.Add("192.156.0.0");
+            expected.Add("192.160.0.0");
+            expected.Add("192.164.0.0");
+            expected.Add("192.168.0.0");
+            expected.Add("192.172.0.0");
+            expected.Add("192.176.0.0");
+            expected.Add("192.180.0.0");
+            expected.Add("192.184.0.0");
+            expected.Add("192.188.0.0");
+            expected.Add("192.192.0.0");
+            expected.Add("192.196.0.0");
+            expected.Add("192.200.0.0");
+            expected.Add("192.204.0.0");
+            expected.Add("192.208.0.0");
+            expected.Add("192.212.0.0");
+            expected.Add("192.216.0.0");
+            expected.Add("192.220.0.0");
+            expected.Add("192.224.0.0");
+            expected.Add("192.228.0.0");
+            expected.Add("192.232.0.0");
+            expected.Add("192.236.0.0");
+            expected.Add("192.240.0.0");
+            expected.Add("192.244.0.0");
+            expected.Add("192.248.0.0");
+            expected.Add("192.252.0.0");
+
+            // Act
+
+            List<string> testResult = svc.CalculateAvailableSubnets(inputEntity);
+
+            // Assert
+
+            for (int i = 0; i < testResult.Count; i++)
+            {
+                Assert.AreEqual(expected[i], svc.BinaryToString(testResult[i]));
+            }
         }
     }
 }
