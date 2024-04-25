@@ -297,5 +297,49 @@ namespace UnitTests
                 Assert.AreEqual(expected[i], svc.BinaryToString(testResult[i]));
             }
         }
+
+        [TestMethod]
+        public void CalcFourteenAvailableSubnets_ReturnTrue()
+        {
+            // Arrange
+            var svc = new SubnetCalculator();
+            List<string> expected = new List<string>();
+            string inputIp = "192.168.1.100";
+            string inputSubnet = "255.252.0.0";
+            int inputSubnetAmount = 14;
+
+            SubnetEntity inputEntity = new SubnetEntity()
+            {
+                IPAdress = inputIp,
+                SubnetMask = inputSubnet,
+                SubnetAmount = inputSubnetAmount,
+            };
+
+            expected.Add("192.168.0.0");
+            expected.Add("192.168.64.0");
+            expected.Add("192.168.128.0");
+            expected.Add("192.168.192.0");
+            expected.Add("192.169.0.0");
+            expected.Add("192.169.64.0");
+            expected.Add("192.169.128.0");
+            expected.Add("192.169.192.0");
+            expected.Add("192.170.0.0");
+            expected.Add("192.170.64.0");
+            expected.Add("192.170.128.0");
+            expected.Add("192.170.192.0");
+            expected.Add("192.171.0.0");
+            expected.Add("192.171.64.0");
+
+            // Act
+
+            List<string> testResult = svc.CalculateAvailableSubnets(inputEntity);
+
+            // Assert
+
+            for (int i = 0; i < testResult.Count; i++)
+            {
+                Assert.AreEqual(expected[i], svc.BinaryToString(testResult[i]));
+            }
+        }
     }
 }
