@@ -15,6 +15,8 @@ namespace Subnetzrechner
             // 6. Schritt Diesen Bereich in Binär hochzählen (Bsp. .001 , 010, 011, 100, 101, 110, 111 etc.)
             // Schritt 5 und 6 in Netzwerkadresse!!!!!
 
+            
+
             try
             {
                 Console.WriteLine("IP-Adresse");
@@ -32,7 +34,7 @@ namespace Subnetzrechner
                     SubnetAmount = subnetAmountInput
                 };
 
-                    new SubnetCalculator().ShowAvailableSubnets(inputEntity);
+                    new SubnetCalculator().CalculateAvailableSubnets(inputEntity);
                 Console.ReadKey();
             }
             catch (Exception ex)

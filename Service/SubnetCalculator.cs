@@ -22,13 +22,37 @@ namespace Service
         }
 
         // Berechnet alle Subnetze mithilfe der User Inputs und speichert diese in einer ArrayList
-        private ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
+        public ArrayList CalculateAvailableSubnets(SubnetEntity inputEntity)
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
             string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
+            string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             double logOfAmountSubnets = CalcLogarithmus(inputEntity.SubnetAmount);
             int amountOnesInMask = CountOnesInSubnetMask(subnetmaskBinary);
-            string? networkAdressBinary = CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
+            char[] singleNumsNetworkAdress = splittedStringAsCharArray(networkAdressBinary);
+            string subnet = "";
+            ArrayList subnets = new();
+            subnets.Add(networkAdressBinary);
+
+            for (int j = 0; j < amountOnesInMask; j++)
+            {
+                if(j % 8 == 0){
+                    subnet += singleNumsNetworkAdress[j] + ".";
+                }
+                else{
+                    subnet += singleNumsNetworkAdress[j];
+                }
+            }
+
+            int countTo = (int)Math.Pow(2, logOfAmountSubnets); // Anzahl der Zahlen, die im Binärsystem gezählt werden sollen
+
+            for (int i = 0; i < countTo; i++)
+            {
+                string binary = Convert.ToString(i, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0'); // Konvertiere die Zahl in Binär und füge führende Nullen hinzu
+                Console.WriteLine(binary);
+            }
+
+
             return null;
         }
 
@@ -226,6 +250,16 @@ namespace Service
             {
                 return true;
             }
+        }
+
+        private char[] splittedStringAsCharArray(string splittedString){
+            char[] stringAsChar = {};
+            string[] splitString = SplitString(splittedString);
+            foreach (var octet in splitString)
+            {
+                stringAsChar = octet.ToCharArray(); 
+            }
+            return stringAsChar;
         }
     }
 }
