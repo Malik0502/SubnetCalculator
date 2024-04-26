@@ -12,7 +12,7 @@ namespace Service
         {
             if (ValidateUserInput(inputEntity))
             {
-                foreach (string subnet in CalculateAvailableSubnets(inputEntity))
+                foreach (string subnet in CalcAvailableSubnets(inputEntity))
                 {
                     string subnetAsDecimal = BinaryToString(subnet);
                     Console.WriteLine(subnetAsDecimal);
@@ -24,8 +24,23 @@ namespace Service
             }
         }
 
+        public void ShowAvailableAsymSubnets(AsymSubnetEntity inputEntity)
+        {
+                foreach (string subnet in CalcAvailableAsymSubnets(inputEntity))
+                {
+                    string asyncSubnetAsDecimal = BinaryToString(subnet);
+                    Console.WriteLine(asyncSubnetAsDecimal);
+                }
+        }
+
+        public List<string> CalcAvailableAsymSubnets(AsymSubnetEntity inputEntity)
+        {
+
+            return null;
+        }
+
         // Berechnet mögliche Subnetze mithilfe einer Ip-Adresse, einer Subnetzmaske und der Anzahl an gewünschten Teilnetzen
-        public List<string> CalculateAvailableSubnets(SubnetEntity inputEntity)
+        public List<string> CalcAvailableSubnets(SubnetEntity inputEntity)
         {
             string? ipAdressBinary = StringToBinaryString(inputEntity.IPAdress);
             string? subnetmaskBinary = StringToBinaryString(inputEntity.SubnetMask);
