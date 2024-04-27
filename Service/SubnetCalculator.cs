@@ -256,15 +256,7 @@ namespace Service
                 Console.WriteLine("Die Ip-Adresse / Die Subnetzmaske hat das falsche Format");
                 Console.WriteLine("Zu viele Oktette");
                 Environment.Exit(0);
-            }
-
-            foreach(var item in splittedString){
-                if(item.Length > 3){
-                    Console.WriteLine("Die Ip-Adresse / Die Subnetzmaske hat das falsche Format");
-                    Console.WriteLine("Oktett zu lang");
-                    Environment.Exit(0);
-                }
-            }   
+            } 
             return splittedString;
         } 
 
