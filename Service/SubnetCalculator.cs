@@ -61,7 +61,7 @@ namespace Service
                 }
                 
                 // Baut den Teil zusammen, der geändert werden muss und zählt diesen Hoch
-                // Nimmt den subnetCount und wandelt diesen in Binär um. 
+                // Nimmt den subnetCount und wandelt diesen in Binär um
                 // Dieser wird dann mit Nullen aufgefüllt und nach rechts alignt bis der String so lang idt wie die Anzahl der benötigten Netze
                 string binary = Convert.ToString(subnetCount, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0');
                 char[] binaryAsChar = binary.ToCharArray();
@@ -79,7 +79,7 @@ namespace Service
                     posCounter++;
                 }
 
-                // Fügt die restlichen Nummer an die Ip-Adresse ran.
+                // Fügt die restlichen Nummer an die Ip-Adresse ran
                 for (int binaryRest = amountOnesInMask + Convert.ToInt32(logOfAmountSubnets); binaryRest < singleNumsNetworkAdress.Length; binaryRest++)
                 {
                     if(binaryRest % 8 == 0){

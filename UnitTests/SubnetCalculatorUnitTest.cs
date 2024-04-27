@@ -347,12 +347,12 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void CheckAmountHostbits_ReturnTrue()
+        public void GetMinNeededHosts_ReturnTrue()
         {
             // Arrange
             SubnetCalcHelper helper = new();
-            int input = 65;
-            int expected = 128;
+            int input = 333;
+            int expected = 512;
 
             // Act
             int testResult = helper.GetMinNeededHosts(input);
@@ -371,6 +371,36 @@ namespace UnitTests
 
             // Act
             double testResult = helper.CalcLogarithmus(input);
+
+            // Assert
+            Assert.AreEqual(expected, testResult);
+        }
+
+        [TestMethod]
+        public void CalcNeededHostbits_ReturnTrue()
+        {
+            // Arrange
+            SubnetCalcHelper helper = new();
+            int input = 300;
+            int expected = 9;
+
+            // Act
+            int testResult = helper.CalcNeededHostbits(input);
+
+            // Assert
+            Assert.AreEqual(expected, testResult);
+        }
+
+        [TestMethod]
+        public void CalcSubnetmask_ReturnTrue()
+        {
+            // Arrange
+            AsymSubnetCalculator svc = new();
+            int input = 8;
+            string expected = "11111111.11111111.11111111.00000000";
+
+            // Act
+            string testResult = svc.CalcSubnetmask(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);

@@ -57,7 +57,7 @@ namespace Service
             ArrayList AdressInBinary = new ArrayList();
             try
             {
-                // Iteriert durch die 4 Oktette und nutzt Modulo um den Rest herauszufinden.
+                // Iteriert durch die 4 Oktette und nutzt Modulo um den Rest herauszufinden
                 // Dieser ist dann eine Stelle des Binärcodes
                 foreach (var octet in splittedAdress)
                 {
@@ -158,7 +158,7 @@ namespace Service
         }
 
         // Teilt einen String auf um die Punkte bei der IP wegzubekommen
-        // Prüft außerdem ob die strings das richtige Format haben um Fehler zu vermeiden.
+        // Prüft außerdem ob die strings das richtige Format haben um Fehler zu vermeiden
         public string[] SplitString(string ipAdress)
         {
             string[] splittedString = ipAdress.Split(".");
@@ -213,26 +213,47 @@ namespace Service
             }
         }
 
+        // Checkt mit einer If-Schleife ob die Anzahl an Host größer oder kleiner 2^i ist
+        // Wenn größer -> Schleife geht einen weiter
+        // Wenn kleiner -> returned das Ergebnis von 2^i
+        // So groß muss das Subnetz sein um mit der geforderten Anzahl an Hosts klar zu kommen
         public int GetMinNeededHosts(int hostAmount)
         {
             int neededHostAmount = 0;
-            for (int i = 1; i <= 128; i *= 2)
+            for (int i = 0; i < 32; i++)
             {
-                if (hostAmount > i)
+                if (hostAmount > Math.Pow(2, i))
                 {
                     continue;
                 }
                 else
                 {
-                    neededHostAmount += i;
-                    return neededHostAmount;
+                    return Convert.ToInt32(Math.Pow(2, i));
                 }
             }
-            if (neededHostAmount == 0)
-            {
-                Console.WriteLine("Ihre Hostanzahl ist zu groß");
-            }
             return neededHostAmount;
+        }
+
+        // Die Schleife wird auf < 24 begrenzt, da ein Subnetz maximal 2^24 Hosts haben kann
+        // Es wird mit If geprüft ob ob die hostAmount größer oder kleiner als 2^i
+        // Wenn größer -> Schleife geht einen weiter
+        // Wenn kleiner -> returned das Ergebnis von 2^i
+        // Dies ist die Anzahl an Hostbits die du brauchst
+        // Notiz: Könnte später vllt mit GetMinNeededHosts zusammengefügt werden. Jedenfalls optimiert werden um aus zwei eine Funktion zu machen
+        public int CalcNeededHostbits(int hostAmount)
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                if (hostAmount > Math.Pow(2, i) - 2)
+                {
+                    continue;
+                }
+                else
+                {
+                    return i;
+                }
+            }
+            return 0;
         }
 
     }
