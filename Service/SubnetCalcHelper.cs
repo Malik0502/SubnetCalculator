@@ -212,5 +212,28 @@ namespace Service
                 bitCounter /= 2;
             }
         }
+
+        public int GetMinNeededHosts(int hostAmount)
+        {
+            int neededHostAmount = 0;
+            for (int i = 1; i <= 128; i *= 2)
+            {
+                if (hostAmount > i)
+                {
+                    continue;
+                }
+                else
+                {
+                    neededHostAmount += i;
+                    return neededHostAmount;
+                }
+            }
+            if (neededHostAmount == 0)
+            {
+                Console.WriteLine("Ihre Hostanzahl ist zu groß");
+            }
+            return neededHostAmount;
+        }
+
     }
 }

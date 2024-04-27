@@ -35,7 +35,10 @@ namespace Service
             int subnetAmount = inputEntity.SubnetAmount;
 
             string? networkAdressBinary = helper.CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
-            double logOfAmountSubnets = Math.Ceiling(helper.CalcLogarithmus(inputEntity.SubnetAmount));
+            double logOfAmountSubnets = helper.CalcLogarithmus(helper.GetMinNeededHosts(subnetAmount));               
+            /* Alte Version:
+             * Math.Ceiling(helper.CalcLogarithmus(inputEntity.SubnetAmount));*/
+
             int amountOnesInMask = helper.CountOnesInSubnetMask(subnetmaskBinary);
 
             char[] singleNumsNetworkAdress = helper.StringToCharArray(networkAdressBinary);

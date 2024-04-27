@@ -345,5 +345,35 @@ namespace UnitTests
                 Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
             }
         }
+
+        [TestMethod]
+        public void CheckAmountHostbits_ReturnTrue()
+        {
+            // Arrange
+            SubnetCalcHelper helper = new();
+            int input = 65;
+            int expected = 128;
+
+            // Act
+            int testResult = helper.GetMinNeededHosts(input);
+
+            // Assert
+            Assert.AreEqual(expected, testResult);
+        }
+
+        [TestMethod]
+        public void CalcHostbits_ReturnTrue()
+        {
+            // Arrange
+            SubnetCalcHelper helper = new();
+            int input = 8;
+            int expected = 3;
+
+            // Act
+            double testResult = helper.CalcLogarithmus(input);
+
+            // Assert
+            Assert.AreEqual(expected, testResult);
+        }
     }
 }
