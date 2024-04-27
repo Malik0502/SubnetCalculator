@@ -71,7 +71,7 @@ namespace Subnetzrechner
                                 HostAmount = inputHostAmount,
                             };
 
-                            new SubnetCalculator().CalcAvailableAsymSubnets(asymInputEntity);
+                            new AsymSubnetCalculator().CalcAvailableAsymSubnets(asymInputEntity);
 
                             break;
                     }
