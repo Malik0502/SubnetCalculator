@@ -31,8 +31,10 @@
                 // Durch die Hostbit Anzahl kann dann die Subnetzmaske für jedes einzelne Subnetz berechnet werden
                 foreach (var item in neededHosts)
                 {
-                    int hostbit = helper.GetMinNeededHosts(item);
+                    int hostbit = helper.CalcNeededHostbits(item);
                     string subnetmask = CalcSubnetmask(hostbit);
+
+
                 }
             }
             return null;
