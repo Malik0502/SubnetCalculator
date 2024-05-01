@@ -11,6 +11,7 @@ namespace Subnetzrechner
     {
         public void StartMenu()
         {
+            SubnetCalcHelper helper = new();
             while (true)
             {
                 try
@@ -66,12 +67,12 @@ namespace Subnetzrechner
 
                             AsymSubnetEntity asymInputEntity = new()
                             {
-                                IPAdress = inputIpAdress,
+                                IPAdress = helper.StringToBinaryString(inputIpAdress),
                                 SubnetAmount = inputSubnetAmount,
                                 HostAmount = inputHostAmount,
                             };
 
-                            new AsymSubnetCalculator().CalcAvailableAsymSubnets(asymInputEntity);
+                            new AsymSubnetCalculator().ShowAvailableAsymSubnets(asymInputEntity);
 
                             break;
                     }

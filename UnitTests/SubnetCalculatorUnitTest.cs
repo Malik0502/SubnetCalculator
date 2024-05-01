@@ -443,7 +443,7 @@ namespace UnitTests
 
             AsymSubnetEntity inputEntity = new()
             {
-                IPAdress = inputIp,
+                IPAdress = helper.StringToBinaryString(inputIp),
                 HostAmount = inputHostAmount,
                 SubnetAmount = inputSubnetAmount,
             };

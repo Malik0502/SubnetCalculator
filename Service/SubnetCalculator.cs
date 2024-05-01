@@ -62,7 +62,7 @@ namespace Service
                 
                 // Baut den Teil zusammen, der geändert werden muss und zählt diesen Hoch
                 // Nimmt den subnetCount und wandelt diesen in Binär um
-                // Dieser wird dann mit Nullen aufgefüllt und nach rechts alignt bis der String so lang ist wie die Anzahl der benötigten Netze
+                // Dieser wird dann mit Nullen aufgefüllt und nach rechts alignt bis der String so lang ist wie die Anzahl der Hostbits
                 string binary = Convert.ToString(subnetCount, 2).PadLeft(Convert.ToInt32(logOfAmountSubnets), '0');
                 char[] binaryAsChar = binary.ToCharArray();
 

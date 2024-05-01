@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Net;
 
 namespace Service
 {
@@ -254,6 +255,27 @@ namespace Service
                 }
             }
             return 0;
+        }
+
+        public string IncrementIpAdress(string iPAdress, int startIndex)
+        {
+            string[] splittedString = SplitString(iPAdress);
+            int partIndex = startIndex / 8;
+            string result = "";
+
+            int partAsDecimal = Convert.ToInt32(splittedString[partIndex], 2);
+            partAsDecimal++;
+            splittedString[partIndex] = Convert.ToString(partAsDecimal, 2).PadLeft(8, '0');
+            foreach (string part in splittedString)
+            {
+                if (part != splittedString.Last())
+                {
+                    result += part + ".";
+                }
+                else result += part;
+            }
+            
+            return result;
         }
 
     }
