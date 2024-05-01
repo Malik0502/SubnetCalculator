@@ -163,6 +163,24 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void CalcNetworkAdressTest_ReturnTrue()
+        {
+            // Arrange
+            var helper = new SubnetCalcHelper();
+            string expected = "10101100.00010000.00000001.10110000";
+            string inputIp = "10101100.00010000.00000001.10110000";
+            string inputSubnet = "11111111.11111111.11111111.11110000";
+
+            // Act
+
+            string testResult = helper.CalcNetworkAdressBinary(inputIp, inputSubnet);
+
+            // Assert
+
+            Assert.AreEqual(expected, testResult);
+        }
+
+        [TestMethod]
         public void CalNetworkAdress_ReturnFalse()
         {
 
@@ -404,6 +422,47 @@ namespace UnitTests
 
             // Assert
             Assert.AreEqual(expected, testResult);
+        }
+
+        [TestMethod]
+        public void CalcAsymSubnet_ReturnTrue()
+        {
+            // Arrange
+            var helper = new SubnetCalcHelper();
+            var svc = new AsymSubnetCalculator();
+            List<string> expected = new List<string>();
+            string inputIp = "172.16.1.0";
+            List<int> inputHostAmount = new List<int>();
+
+            inputHostAmount.Add(60);
+            inputHostAmount.Add(50);
+            inputHostAmount.Add(17);
+            inputHostAmount.Add(12);
+
+            int inputSubnetAmount = 4;
+
+            AsymSubnetEntity inputEntity = new()
+            {
+                IPAdress = inputIp,
+                HostAmount = inputHostAmount,
+                SubnetAmount = inputSubnetAmount,
+            };
+
+            for (int i = 0; i < 176; i++)
+            {
+                expected.Add($"172.16.1.{i}");
+            }
+
+            // Act
+
+            List<string> testResult = svc.CalcAvailableAsymSubnets(inputEntity);
+
+            // Assert
+
+            for (int i = 0; i < testResult.Count; i++)
+            {
+                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
+            }
         }
     }
 }

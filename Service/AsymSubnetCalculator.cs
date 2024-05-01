@@ -2,7 +2,8 @@
 {
     public class AsymSubnetCalculator
     {
-        SubnetCalcHelper helper = new();
+        private SubnetCalcHelper helper = new();
+        private List<string> resultAsymCalc = new();
 
         public void ShowAvailableAsymSubnets(AsymSubnetEntity inputEntity)
         {
@@ -16,28 +17,106 @@
         public List<string> CalcAvailableAsymSubnets(AsymSubnetEntity inputEntity)
         {
             string iPAdressBinary = helper.StringToBinaryString(inputEntity.IPAdress);
-            int subnetAmount= inputEntity.SubnetAmount;
+            int subnetAmount = inputEntity.SubnetAmount;
 
             List<int> hostAmount = inputEntity.HostAmount;
-            List<int> neededHosts = new();
+            
 
-            // Iteriert durch die Hostliste und findet für jede Eingabe heraus wie groß das Netz mindestens sein muss,
-            // damit alle Clients reinpassen (30 Host -> 32 Clients müssen verfügbar sein etc.)
-            foreach (int hosts in hostAmount)
+            if (hostAmount.Count != 0)
             {
-                neededHosts.Add(helper.GetMinNeededHosts(hosts));
+                hostAmount.Sort();
+                hostAmount.Reverse();
 
-                // Iteriert durch eine Liste mit berechneten Hostgrößen um dadurch die Hostbits zu berechnen
-                // Durch die Hostbit Anzahl kann dann die Subnetzmaske für jedes einzelne Subnetz berechnet werden
-                foreach (var item in neededHosts)
+                int hosts = hostAmount[0];
+
+                // Berechnet mithilfe von neededHosts, die benötigten Hostbits und daraufhin die Subnetzmaske
+                int neededHosts = helper.GetMinNeededHosts(hosts);
+                int hostbit = Convert.ToInt32(helper.CalcLogarithmus(neededHosts));
+
+                string subnetmaskBinary = CalcSubnetmask(hostbit);
+                int amountOnesMask = helper.CountOnesInSubnetMask(subnetmaskBinary);
+
+                string networkadress = helper.CalcNetworkAdressBinary(iPAdressBinary, subnetmaskBinary);
+                char[] networkAdressAsChars = helper.StringToCharArray(networkadress);
+                
+                string subnet = "";
+
+                Console.WriteLine($"Subnetz {resultAsymCalc.Count + 1}:");
+
+                // Baut den ersten Teil der Subnet Adresse zusammen. So weit wie es Einsen in der Subnetzmaske gibt
+                for (int subnetCount = 0; subnetCount < neededHosts + 1; subnetCount++)
                 {
-                    int hostbit = helper.CalcNeededHostbits(item);
-                    string subnetmask = CalcSubnetmask(hostbit);
+                    int posCounter;
+                    for (posCounter = 0; posCounter < amountOnesMask; posCounter++)
+                    {
+                        if ((posCounter + 1) % 8 == 0 && posCounter != 0)
+                        {
+                            subnet += networkAdressAsChars[posCounter] + ".";
+                        }
+                        else
+                        {
+                            subnet += networkAdressAsChars[posCounter];
+                        }
+                    }
 
+                    // Baut den Teil zusammen, der geändert werden muss und zählt diesen Hoch
+                    // Nimmt den subnetCount und wandelt diesen in Binär um
+                    // Dieser wird dann mit Nullen aufgefüllt und nach rechts alignt bis der String so lang ist wie die Anzahl der benötigten Netze
+                    
+                    if(subnetCount == neededHosts)
+                    {
+                        string binary = Convert.ToString(subnetCount, 2).PadLeft(Convert.ToInt32(hostbit - 1), '0');
+                    }
+                    else
+                    {
+                        string binary = Convert.ToString(subnetCount, 2).PadLeft(Convert.ToInt32(hostbit), '0');
+                    }
+                    char[] binaryAsChar = binary.ToCharArray();
 
+                    foreach (var binaryNum in binaryAsChar)
+                    {
+                        if ((networkAdressAsChars.Length - posCounter) % 8 == 0)
+                        {
+                            subnet += binaryNum + ".";
+                        }
+                        else
+                        {
+                            subnet += binaryNum;
+                        }
+                        posCounter++;
+                    }
+
+                    // Fügt die restlichen Nummer an die Ip-Adresse ran
+                    for (int binaryRest = amountOnesMask + Convert.ToInt32(hostbit); binaryRest < networkAdressAsChars.Length; binaryRest++)
+                    {
+                        if (binaryRest % 8 == 0)
+                        {
+                            subnet += networkAdressAsChars[binaryRest] + ".";
+                        }
+                        else
+                        {
+                            subnet += networkAdressAsChars[binaryRest];
+                        }
+                    }
+                    resultAsymCalc.Add(subnet);
+                    subnet = "";
                 }
+                hostAmount.RemoveAt(0);
+                AsymSubnetEntity asymSubnetEntity = new AsymSubnetEntity()
+                {
+                    IPAdress = resultAsymCalc.Last(),
+                    SubnetAmount = subnetAmount - 1,
+                    HostAmount = hostAmount,
+                };
+                resultAsymCalc.RemoveAt(resultAsymCalc.Count - 1);
+                CalcAvailableAsymSubnets(asymSubnetEntity);
+
             }
-            return null;
+            else
+            {
+                return resultAsymCalc;
+            }
+            return resultAsymCalc;
         }
 
         public string CalcSubnetmask(double hostbits)
