@@ -8,8 +8,8 @@ namespace Service
         // Berechnet die Netzwerkadresse mithilfe einer AND Operation und gibt diese als Binärstring aus
         public string CalcNetworkAdressBinary(string ipAdressBinary, string subnetMaskBinary)
         {
-            string resultOfAND = "";
-            string partialResultOfAND = "";
+            string result = "";
+            string partialResult = "";
             int tableCounter = 0;
 
             // Teilt die strings in 4 gleichgroße Oktette um diese einzeln zu verwenden
@@ -22,7 +22,7 @@ namespace Service
             {
                 char[] singleNumsSubnet = splittedSubnetmaskBinary[i].ToCharArray();
                 char[] singleNumsIP = splittedIpAdressBinary[i].ToCharArray();
-                partialResultOfAND = "";
+                partialResult = "";
 
                 // Iteriert durch alle Zahlen der Subnetzmaske und der Ip-Adresse in Binär und vergleicht ob beide gleich 1 sind
                 // Wenn ja wird eine 1 in den String hinzugefügt um die Netzwerkadresse zu bilden.
@@ -30,25 +30,25 @@ namespace Service
                 {
                     if ((singleNumsSubnet[j] & singleNumsIP[j]) == '1')
                     {
-                        partialResultOfAND += "1";
+                        partialResult += "1";
                     }
                     else
                     {
-                        partialResultOfAND += "0";
+                        partialResult += "0";
                     }
                 }
                 // Fügt die passenden Punkte hinzu um das Format der Ip-Adresse zu erfüllen
                 if (tableCounter == splittedSubnetmaskBinary.Length - 1)
                 {
-                    resultOfAND += partialResultOfAND;
+                    result += partialResult;
                 }
                 else
                 {
-                    resultOfAND += partialResultOfAND + ".";
+                    result += partialResult + ".";
                 }
                 tableCounter++;
             }
-            return resultOfAND;
+            return result;
         }
 
         // Nimmt einen String als Eingabe und gibt einen String in Form von Binärcode zurück

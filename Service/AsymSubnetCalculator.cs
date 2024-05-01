@@ -7,10 +7,12 @@
 
         public void ShowAvailableAsymSubnets(AsymSubnetEntity inputEntity)
         {
+            int counter = 0;
             foreach (string subnet in CalcAvailableAsymSubnets(inputEntity))
             {
                 string asyncSubnetAsDecimal = helper.BinaryToString(subnet);
                 Console.WriteLine(asyncSubnetAsDecimal);
+                counter++;
             }
         }
 
@@ -41,7 +43,6 @@
                 char[] networkAdressAsChars = helper.StringToCharArray(networkadress);
                 
                 string subnet = "";
-
 
                 for (int i = 0; i < neededHosts + 1; i++)
                 {
@@ -118,7 +119,7 @@
         public string CalcSubnetmask(double hostbits)
         {
             // Berechnet die Anzahl an Einsen die nötig sind
-            // Hostbits = Anzahl Nullen in Subnetzmaske
+            // Hostbits = Anzahl Nullen in Subnetzmaske - 32
             int amountOfOnes = 32 - Convert.ToInt32(hostbits);
             string subnetmask = ""; 
 
