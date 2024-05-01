@@ -28,24 +28,16 @@ namespace Service
                 // Wenn ja wird eine 1 in den String hinzugefügt um die Netzwerkadresse zu bilden.
                 for (int j = 0; j < singleNumsSubnet.Length; j++)
                 {
-                    if ((singleNumsSubnet[j] & singleNumsIP[j]) == '1')
-                    {
-                        partialResult += "1";
-                    }
-                    else
-                    {
-                        partialResult += "0";
-                    }
+                    if ((singleNumsSubnet[j] & singleNumsIP[j]) == '1') partialResult += "1";
+
+                    else partialResult += "0";
+
                 }
                 // Fügt die passenden Punkte hinzu um das Format der Ip-Adresse zu erfüllen
-                if (tableCounter == splittedSubnetmaskBinary.Length - 1)
-                {
-                    result += partialResult;
-                }
-                else
-                {
-                    result += partialResult + ".";
-                }
+                if (tableCounter == splittedSubnetmaskBinary.Length - 1) result += partialResult;
+
+                else result += partialResult + ".";
+
                 tableCounter++;
             }
             return result;
@@ -73,6 +65,7 @@ namespace Service
 
                     // Das unfertige Ergebnis wird mit den fehlenden Nullen aufgefüllt.
                     // Dann wird dieser umgedeht und in eine Liste hinzugefügt
+                    // Dabei entsteht dann die richtige Zahl im Binärformat
                     partialResult = FillUpWithZeros(partialResult);
                     partialResult = ReverseString(partialResult);
                     AdressInBinary.Add(partialResult);
@@ -91,7 +84,7 @@ namespace Service
         public string BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
-            int resultOfOctetInDecimal = 0;
+            int partialResult = 0;
             string result = "";
             int counter = 0;
 
@@ -102,7 +95,7 @@ namespace Service
             // Value = Binärzahl vom Oktett von vorne nach hinten
             foreach (string octet in splittedBinary)
             {
-                resultOfOctetInDecimal = 0;
+                partialResult = 0;
                 Dictionary<int, int> conversionTable = new Dictionary<int, int>();
 
                 char[] singleNumsFromOctet = octet.ToCharArray();
@@ -110,18 +103,14 @@ namespace Service
 
                 foreach (var item in conversionTable)
                 {
-                    resultOfOctetInDecimal += item.Key * item.Value;
+                    partialResult += item.Key * item.Value;
                 }
 
                 // Fügt die passenden Punkte hinzu um das Format der Ip-Adresse zu erfüllen
-                if (counter == splittedBinary.Length - 1)
-                {
-                    result += resultOfOctetInDecimal;
-                }
-                else
-                {
-                    result += resultOfOctetInDecimal + ".";
-                }
+                if (counter == splittedBinary.Length - 1) result += partialResult;
+
+                else result += partialResult + ".";
+                
                 counter++;
 
             }
@@ -135,10 +124,7 @@ namespace Service
             int counter = 0;
             foreach (var binaryNum in subnetmaskAsChars)
             {
-                if (binaryNum == '1')
-                {
-                    counter++;
-                }
+                if (binaryNum == '1') counter++;
             }
             return counter;
         }
@@ -179,14 +165,13 @@ namespace Service
             return new string(stringToReverse.Reverse().ToArray());
         }
 
-        // Füllt den String mit Nullen um Binärformat zu bekommen
+        // Füllt den String mit Nullen um legitimes Binärformat zu bekommen
         public string FillUpWithZeros(string stringToFillUp)
         {
             for (int i = stringToFillUp.Count(); i < 8; i++)
             {
                 stringToFillUp += 0;
             }
-
             return stringToFillUp;
         }
 
@@ -200,7 +185,7 @@ namespace Service
 
         // Fügt die einzelnen Chars von einem Oktet String in ein Dictionary hinzu
         // Die Key Values sind vielfache von 2 die von 1 - 128 gehen
-        // Hilfsfunktion für Binär in Dezimal
+        // Hilfsfunktion für Umwandlung Binär in Dezimal
         public void AddConvertedCharToDic(char[] charToConvert, Dictionary<int, int> conversionTable)
         {
             int bitCounter = 128;
@@ -257,22 +242,44 @@ namespace Service
             return 0;
         }
 
+        // Erhöht einen Teil einer übergebenen Ip-Adresse
+        // Ip wird in 4 gleichgroße Teile gespalten
+        // erhöht das oktet, dass startIndex / 8 als index hat
+        // Das Oktett wird in Dezimal umgewandelt, dann um 1 erhöht und dann wieder zurück addiert
         public string IncrementIpAdress(string iPAdress, int startIndex)
         {
+            // Teilt den String auf
             string[] splittedString = SplitString(iPAdress);
             int partIndex = startIndex / 8;
             string result = "";
 
+            // Konvertiert zu Dezimalzahl
             int partAsDecimal = Convert.ToInt32(splittedString[partIndex], 2);
             partAsDecimal++;
-            splittedString[partIndex] = Convert.ToString(partAsDecimal, 2).PadLeft(8, '0');
-            foreach (string part in splittedString)
+
+            // Wenn Zahl == 255,
+            // dann wird Oktett, dass vor dem erhöhten Oktett steht um eins erhöht
+            // partAsDecimal wird dann auf 0 gesetzt
+            if (partAsDecimal >= 255)
             {
-                if (part != splittedString.Last())
+                partAsDecimal = 0;
+                int partBeforeConverted = Convert.ToInt32(splittedString[partIndex - 1], 2);
+                partBeforeConverted++;
+                splittedString[partIndex - 1] = Convert.ToString(partBeforeConverted, 2).PadLeft(8, '0');
+                splittedString[partIndex] = Convert.ToString(partAsDecimal, 2).PadLeft(8, '0');
+            }
+            else {
+                splittedString[partIndex] = Convert.ToString(partAsDecimal, 2).PadLeft(8, '0');
+            }
+
+            // Setzt alles wieder zu einem String zusammen
+            foreach (string item in splittedString)
+            {
+                if (item != splittedString.Last())
                 {
-                    result += part + ".";
+                    result += item + ".";
                 }
-                else result += part;
+                else result += item;
             }
             
             return result;

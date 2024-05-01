@@ -448,10 +448,64 @@ namespace UnitTests
                 SubnetAmount = inputSubnetAmount,
             };
 
-            for (int i = 0; i < 176; i++)
+            expected.Add("172.16.1.1");
+            expected.Add("172.16.1.62");
+            expected.Add("172.16.1.65");
+            expected.Add("172.16.1.126");
+            expected.Add("172.16.1.129");
+            expected.Add("172.16.1.158");
+            expected.Add("172.16.1.161");
+            expected.Add("172.16.1.174");
+
+
+            // Act
+
+            List<string> testResult = svc.CalcAvailableAsymSubnets(inputEntity);
+
+            // Assert
+
+            for (int i = 0; i < testResult.Count; i++)
             {
-                expected.Add($"172.16.1.{i}");
+                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
             }
+        }
+
+        [TestMethod]
+        public void CalcAsymSubnetTwo_ReturnTrue()
+        {
+            // Arrange
+            var helper = new SubnetCalcHelper();
+            var svc = new AsymSubnetCalculator();
+            List<string> expected = new List<string>();
+            string inputIp = "192.168.35.0";
+            List<int> inputHostAmount = new List<int>();
+
+            inputHostAmount.Add(60);
+            inputHostAmount.Add(30);
+            inputHostAmount.Add(15);
+            inputHostAmount.Add(12);
+            inputHostAmount.Add(13);
+
+            int inputSubnetAmount = 5;
+
+            AsymSubnetEntity inputEntity = new()
+            {
+                IPAdress = helper.StringToBinaryString(inputIp),
+                HostAmount = inputHostAmount,
+                SubnetAmount = inputSubnetAmount,
+            };
+
+            expected.Add("192.168.35.1");
+            expected.Add("192.168.35.62");
+            expected.Add("192.168.35.65");
+            expected.Add("192.168.35.94");
+            expected.Add("192.168.35.97");
+            expected.Add("192.168.35.110");
+            expected.Add("192.168.35.113");
+            expected.Add("192.168.35.126");
+            expected.Add("192.168.35.129");
+            expected.Add("192.168.35.142");
+
 
             // Act
 
