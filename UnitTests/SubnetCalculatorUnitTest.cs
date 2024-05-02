@@ -16,7 +16,7 @@ namespace UnitTests
 
             // Act
 
-            string testResult = helper.StringToBinaryString(input);
+            string testResult = helper.StringToBinary(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -33,7 +33,7 @@ namespace UnitTests
 
             // Act
 
-            string testResult = helper.StringToBinaryString(input);
+            string testResult = helper.StringToBinary(input);
 
             // Assert
             Assert.AreNotEqual(expected, testResult);
@@ -50,7 +50,7 @@ namespace UnitTests
 
             // Act
 
-            string testResult = helper.StringToBinaryString(input);
+            string testResult = helper.StringToBinary(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -67,7 +67,7 @@ namespace UnitTests
 
             // Act
 
-            string testResult = helper.StringToBinaryString(input);
+            string testResult = helper.StringToBinary(input);
 
             // Assert
             Assert.AreNotEqual(expected, input);
@@ -443,7 +443,7 @@ namespace UnitTests
 
             AsymSubnetEntity inputEntity = new()
             {
-                IPAdress = helper.StringToBinaryString(inputIp),
+                IPAdress = helper.StringToBinary(inputIp),
                 HostAmount = inputHostAmount,
                 SubnetAmount = inputSubnetAmount,
             };
@@ -490,7 +490,7 @@ namespace UnitTests
 
             AsymSubnetEntity inputEntity = new()
             {
-                IPAdress = helper.StringToBinaryString(inputIp),
+                IPAdress = helper.StringToBinary(inputIp),
                 HostAmount = inputHostAmount,
                 SubnetAmount = inputSubnetAmount,
             };

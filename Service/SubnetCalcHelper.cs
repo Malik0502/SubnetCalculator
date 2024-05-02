@@ -44,7 +44,7 @@ namespace Service
         }
 
         // Nimmt einen String als Eingabe und gibt einen String in Form von Binärcode zurück
-        public string StringToBinaryString(string stringToConvert)
+        public string StringToBinary(string stringToConvert)
         {
             string[] splittedAdress = SplitString(stringToConvert);
             ArrayList AdressInBinary = new ArrayList();
@@ -208,14 +208,9 @@ namespace Service
             int neededHostAmount = 0;
             for (int i = 0; i < 32; i++)
             {
-                if (hostAmount > Math.Pow(2, i))
-                {
-                    continue;
-                }
-                else
-                {
-                    return Convert.ToInt32(Math.Pow(2, i));
-                }
+                if (hostAmount > Math.Pow(2, i)) continue;
+
+                else return Convert.ToInt32(Math.Pow(2, i));
             }
             return neededHostAmount;
         }
@@ -230,14 +225,11 @@ namespace Service
         {
             for (int i = 0; i < 24; i++)
             {
-                if (hostAmount > Math.Pow(2, i) - 2)
-                {
-                    continue;
-                }
-                else
-                {
-                    return i;
-                }
+                if (hostAmount > Math.Pow(2, i) - 2) continue;
+
+
+
+                else return i;
             }
             return 0;
         }
@@ -275,10 +267,8 @@ namespace Service
             // Setzt alles wieder zu einem String zusammen
             foreach (string item in splittedString)
             {
-                if (item != splittedString.Last())
-                {
-                    result += item + ".";
-                }
+                if (item != splittedString.Last()) result += item + ".";
+
                 else result += item;
             }
             

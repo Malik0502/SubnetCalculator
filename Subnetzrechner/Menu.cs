@@ -67,7 +67,7 @@ namespace Subnetzrechner
 
                             AsymSubnetEntity asymInputEntity = new()
                             {
-                                IPAdress = helper.StringToBinaryString(inputIpAdress),
+                                IPAdress = helper.StringToBinary(inputIpAdress),
                                 SubnetAmount = inputSubnetAmount,
                                 HostAmount = inputHostAmount,
                             };

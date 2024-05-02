@@ -12,10 +12,8 @@
             {
                 string asyncSubnetAsDecimal = helper.BinaryToString(subnet);
                 Console.WriteLine(asyncSubnetAsDecimal);
-                if(counter % 2 == 0)
-                {
-                    Console.WriteLine("");
-                }
+                if(counter % 2 == 0) Console.WriteLine("");
+
                 counter++;
             }
         }
@@ -70,28 +68,19 @@
                         binaryAsChar = binary.ToCharArray();
                         foreach (var item in binaryAsChar)
                         {
-                            if ((networkAdressAsChars.Length - posCounter) % 8 == 0)
-                            {
-                                subnet += item + ".";
-                            }
-                            else
-                            {
-                                subnet += item;
-                            }
+                            if ((networkAdressAsChars.Length - posCounter) % 8 == 0) subnet += item + ".";
+                           
+                            else subnet += item;
+
                             posCounter++;
                         }
 
                         // Fügt am Ende die restlichen Nullen hinzu, falls nötig
                         for (int binaryRest = amountOnesMask + Convert.ToInt32(hostbit); binaryRest < networkAdressAsChars.Length; binaryRest++)
                         {
-                            if (binaryRest % 8 == 0)
-                            {
-                                subnet += networkAdressAsChars[binaryRest] + ".";
-                            }
-                            else
-                            {
-                                subnet += networkAdressAsChars[binaryRest];
-                            }
+                            if (binaryRest % 8 == 0) subnet += networkAdressAsChars[binaryRest] + ".";
+
+                            else subnet += networkAdressAsChars[binaryRest];
                         }
                         // Fügt nur wichtige Ip-Adressen in die Liste hinzu. 
                         // Dazu gehört die erste Adresse nach der Netzwerkadresse
@@ -144,7 +133,7 @@
         public string CalcSubnetmask(double hostbits)
         {
             // Berechnet die Anzahl an Einsen die nötig sind
-            // Hostbits = Anzahl Nullen in Subnetzmaske - 32
+            // Hostbits = 32 - Anzahl Nullen in Subnetzmaske
             int amountOfOnes = 32 - Convert.ToInt32(hostbits);
             string subnetmask = ""; 
 
@@ -155,25 +144,15 @@
             {
                 if(i <= amountOfOnes)
                 {
-                    if (i % 8 == 0 && i != 32)
-                    {
-                        subnetmask += "1" + ".";
-                    }
-                    else
-                    {
-                        subnetmask += "1";
-                    }
+                    if (i % 8 == 0 && i != 32) subnetmask += "1" + ".";
+
+                    else subnetmask += "1";
                 }
                 else
                 {
-                    if (i % 8 == 0 && i != 32)
-                    {
-                        subnetmask += "0" + ".";
-                    }
-                    else
-                    {
-                        subnetmask += "0";
-                    }
+                    if (i % 8 == 0 && i != 32) subnetmask += "0" + ".";
+
+                    else subnetmask += "0";
                 }
             }
             return subnetmask;

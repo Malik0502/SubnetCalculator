@@ -29,8 +29,8 @@ namespace Service
         // Berechnet mögliche Subnetze mithilfe einer Ip-Adresse, einer Subnetzmaske und der Anzahl an gewünschten Teilnetzen
         public List<string> CalcAvailableSubnets(SubnetEntity inputEntity)
         {
-            string? ipAdressBinary = helper.StringToBinaryString(inputEntity.IPAdress);
-            string? subnetmaskBinary = helper.StringToBinaryString(inputEntity.SubnetMask);
+            string? ipAdressBinary = helper.StringToBinary(inputEntity.IPAdress);
+            string? subnetmaskBinary = helper.StringToBinary(inputEntity.SubnetMask);
 
             int subnetAmount = inputEntity.SubnetAmount;
 
