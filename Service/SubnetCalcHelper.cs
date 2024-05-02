@@ -227,8 +227,6 @@ namespace Service
             {
                 if (hostAmount > Math.Pow(2, i) - 2) continue;
 
-
-
                 else return i;
             }
             return 0;
