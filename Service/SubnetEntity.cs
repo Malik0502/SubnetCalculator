@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Service
 {
     public class SubnetEntity{

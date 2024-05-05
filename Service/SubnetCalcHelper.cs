@@ -9,8 +9,7 @@ namespace Service
         public string CalcNetworkAdressBinary(string ipAdressBinary, string subnetMaskBinary)
         {
             string result = "";
-            string partialResult = "";
-            int tableCounter = 0;
+            string partialResult;
 
             // Teilt die strings in 4 gleichgroße Oktette um diese einzeln zu verwenden
             string[] splittedIpAdressBinary = SplitString(ipAdressBinary);
@@ -18,27 +17,21 @@ namespace Service
 
 
             // Itertiert durch jedes Oktett und teilt dieses in einzelne Chars ein um die Werte genau zu vergleichen
-            for (int i = 0; i < splittedSubnetmaskBinary.Length; i++)
+            for (int iterationCount = 0; iterationCount < splittedSubnetmaskBinary.Length; iterationCount++)
             {
-                char[] singleNumsSubnet = splittedSubnetmaskBinary[i].ToCharArray();
-                char[] singleNumsIP = splittedIpAdressBinary[i].ToCharArray();
+                char[] singleNumsSubnet = splittedSubnetmaskBinary[iterationCount].ToCharArray();
+                char[] singleNumsIP = splittedIpAdressBinary[iterationCount].ToCharArray();
                 partialResult = "";
 
-                // Iteriert durch alle Zahlen der Subnetzmaske und der Ip-Adresse in Binär und vergleicht ob beide gleich 1 sind
-                // Wenn ja wird eine 1 in den String hinzugefügt um die Netzwerkadresse zu bilden.
+                // Iteriert durch alle Zahlen der Subnetzmaske und der Ip-Adresse in Binär und vergleicht ob beide ungleich 1 sind
+                // Wenn ja wird eine 0 in den String hinzugefügt um die Netzwerkadresse zu bilden.
+                // Wenn beide gleich 1 sind, wird eine 1 hinzugefügt
                 for (int j = 0; j < singleNumsSubnet.Length; j++)
                 {
-                    if ((singleNumsSubnet[j] & singleNumsIP[j]) == '1') partialResult += "1";
-
-                    else partialResult += "0";
-
+                    partialResult += ((singleNumsSubnet[j] & singleNumsIP[j]) != '1') ? "0" : "1";
                 }
                 // Fügt die passenden Punkte hinzu um das Format der Ip-Adresse zu erfüllen
-                if (tableCounter == splittedSubnetmaskBinary.Length - 1) result += partialResult;
-
-                else result += partialResult + ".";
-
-                tableCounter++;
+                result += (iterationCount != splittedSubnetmaskBinary.Length - 1) ? partialResult + ".": partialResult;
             }
             return result;
         }
@@ -84,7 +77,7 @@ namespace Service
         public string BinaryToString(string binaryToConvert)
         {
             string[] splittedBinary = SplitString(binaryToConvert);
-            int partialResult = 0;
+            int partialResult;
             string result = "";
             int counter = 0;
 
@@ -107,9 +100,7 @@ namespace Service
                 }
 
                 // Fügt die passenden Punkte hinzu um das Format der Ip-Adresse zu erfüllen
-                if (counter == splittedBinary.Length - 1) result += partialResult;
-
-                else result += partialResult + ".";
+                result += (counter != splittedBinary.Length - 1) ? partialResult + "." : partialResult;
                 
                 counter++;
 
@@ -211,6 +202,7 @@ namespace Service
                 if (hostAmount > Math.Pow(2, i)) continue;
 
                 else return Convert.ToInt32(Math.Pow(2, i));
+
             }
             return neededHostAmount;
         }
@@ -265,9 +257,7 @@ namespace Service
             // Setzt alles wieder zu einem String zusammen
             foreach (string item in splittedString)
             {
-                if (item != splittedString.Last()) result += item + ".";
-
-                else result += item;
+                result += (item != splittedString.Last()) ? item + "." : item;
             }
             
             return result;

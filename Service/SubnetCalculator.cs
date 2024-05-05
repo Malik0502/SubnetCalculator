@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics;
-using System.Globalization;
-using System.Numerics;
-
-namespace Service
+﻿namespace Service
 {
     public class SubnetCalculator
     {
@@ -12,17 +7,15 @@ namespace Service
         // Zeigt alle Subnetze an, die berechnet werden in Dezimalformat an
         public void ShowAvailableSubnets(SubnetEntity inputEntity)
         {
-            if (ValidateUserInput(inputEntity))
-            {
-                foreach (string subnet in CalcAvailableSubnets(inputEntity))
-                {
-                    string subnetAsDecimal = helper.BinaryToString(subnet);
-                    Console.WriteLine(subnetAsDecimal);
-                }
-            }
-            else
+            if (!ValidateUserInput(inputEntity))
             {
                 Console.WriteLine("Ihre Eingaben haben das falsche Format");
+                Environment.Exit(0);
+            }
+            foreach (string subnet in CalcAvailableSubnets(inputEntity))
+            {
+                string subnetAsDecimal = helper.BinaryToString(subnet);
+                Console.WriteLine(subnetAsDecimal);
             }
         }
 
@@ -52,12 +45,7 @@ namespace Service
                 int posCounter;
                 for (posCounter = 1; posCounter - 1 < amountOnesInMask; posCounter++)
                 {
-                    if(posCounter % 8 == 0){
-                        subnet += singleNumsNetworkAdress[posCounter - 1] + ".";
-                    }
-                    else{
-                        subnet += singleNumsNetworkAdress[posCounter - 1];
-                    }
+                    subnet += (posCounter % 8 != 0) ? singleNumsNetworkAdress[posCounter - 1] : singleNumsNetworkAdress[posCounter - 1] + ".";
                 }
                 
                 // Baut den Teil zusammen, der geändert werden muss und zählt diesen Hoch
@@ -68,26 +56,15 @@ namespace Service
 
                 foreach (var binaryNum in binaryAsChar)
                 {
-                    if ((singleNumsNetworkAdress.Length - posCounter) % 8 == 0)
-                    {
-                        subnet += binaryNum + ".";
-                    }
-                    else
-                    {
-                        subnet += binaryNum;
-                    }
+                    subnet += ((singleNumsNetworkAdress.Length - posCounter) % 8 != 0) ? binaryNum : binaryNum + ".";
+
                     posCounter++;
                 }
 
                 // Fügt die restlichen Nummer an die Ip-Adresse ran
                 for (int binaryRest = amountOnesInMask + Convert.ToInt32(logOfAmountSubnets); binaryRest < singleNumsNetworkAdress.Length; binaryRest++)
                 {
-                    if(binaryRest % 8 == 0){
-                        subnet += singleNumsNetworkAdress[binaryRest] + ".";
-                    }
-                    else{
-                        subnet += singleNumsNetworkAdress[binaryRest];
-                    }
+                    subnet += (binaryRest % 8 != 0) ? singleNumsNetworkAdress[binaryRest] : singleNumsNetworkAdress[binaryRest] + ".";
                 }
                 subnets.Add(subnet);
                 subnet = "";
@@ -103,14 +80,8 @@ namespace Service
             int inputIpAdressLength = inputEntity.IPAdress.Length;
             int inputSubnetmaskLength = inputEntity.SubnetMask.Length;
 
-            if (inputIpAdressLength > 15 || inputIpAdressLength < 7 || inputSubnetmaskLength > 15 || inputSubnetmaskLength < 7 || inputIpAdressLength == 0 || inputSubnetmaskLength == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return (inputIpAdressLength > 15 || inputIpAdressLength < 7 || inputSubnetmaskLength > 15 || inputSubnetmaskLength < 7 || inputIpAdressLength == 0 || inputSubnetmaskLength == 0)
+                ? false : true;
         }
     }
 }
