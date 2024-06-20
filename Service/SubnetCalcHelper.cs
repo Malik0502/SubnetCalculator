@@ -11,7 +11,12 @@ namespace Service
             this.parser = parser;
         }
 
-        // Berechnet die Netzwerkadresse mithilfe einer AND Operation und gibt diese als Binärstring aus
+        /// <summary>
+        /// Berechnet die Netzwerkadresse mithilfe einer AND Operation und gibt diese als Binärstring aus
+        /// </summary>
+        /// <param name="ipAdressBinary"></param>
+        /// <param name="subnetMaskBinary"></param>
+        /// <returns></returns>
         public string CalcNetworkAdressBinary(string ipAdressBinary, string subnetMaskBinary)
         {
             string result = "";
@@ -42,7 +47,11 @@ namespace Service
             return result;
         }
 
-        // Zählt die einsen in der Subnetzmaske um später die Anzahl an Stellen in der Netzwerkadresse zu überspringen
+        /// <summary>
+        /// Zählt die einsen in der Subnetzmaske um später die Anzahl an Stellen in der Netzwerkadresse zu überspringen
+        /// </summary>
+        /// <param name="subnetmaskBinary"></param>
+        /// <returns></returns>
         public int CountOnesInSubnetMask(string subnetmaskBinary)
         {
             IParser parser = this.parser;
@@ -55,8 +64,12 @@ namespace Service
             return counter;
         }
 
-        // Teilt einen String auf um die Punkte bei der IP wegzubekommen
-        // Prüft außerdem ob die strings das richtige Format haben um Fehler zu vermeiden
+        /// <summary>
+        /// Teilt einen String auf um die Punkte bei der IP wegzubekommen
+        /// Prüft außerdem ob die strings das richtige Format haben um Fehler zu vermeiden
+        /// </summary>
+        /// <param name="ipAdress"></param>
+        /// <returns></returns>
         public string[] SplitString(string ipAdress)
         {
             string[] splittedString = ipAdress.Split(".");
@@ -70,13 +83,21 @@ namespace Service
             return splittedString;
         }
 
-        // Nimmt einen String und dreht diesen um
+        /// <summary>
+        /// Nimmt einen String und dreht diesen um
+        /// </summary>
+        /// <param name="stringToReverse"></param>
+        /// <returns></returns>
         public string ReverseString(string stringToReverse)
         {
             return new string(stringToReverse.Reverse().ToArray());
         }
 
-        // Füllt den String mit Nullen um legitimes Binärformat zu bekommen
+        /// <summary>
+        /// Füllt den String mit Nullen um legitimes Binärformat zu bekommen
+        /// </summary>
+        /// <param name="stringToFillUp"></param>
+        /// <returns></returns>
         public string FillUpWithZeros(string stringToFillUp)
         {
             for (int i = stringToFillUp.Count(); i < 8; i++)
@@ -86,7 +107,11 @@ namespace Service
             return stringToFillUp;
         }
 
-        // Berechnet den Logarithmus
+        /// <summary>
+        /// Berechnet den Logarithmus
+        /// </summary>
+        /// <param name="subnetAmount"></param>
+        /// <returns></returns>
         public double CalcLogarithmus(int subnetAmount)
         {
             double amountOfSubnets = Convert.ToInt32(subnetAmount);
@@ -94,9 +119,13 @@ namespace Service
             return amountOfSubnets;
         }
 
-        // Fügt die einzelnen Chars von einem Oktet String in ein Dictionary hinzu
-        // Die Key Values sind vielfache von 2 die von 1 - 128 gehen
-        // Hilfsfunktion für Umwandlung Binär in Dezimal
+        /// <summary>
+        /// Fügt die einzelnen Chars von einem Oktet String in ein Dictionary hinzu
+        /// <para>Die Key Values sind vielfache von 2 die von 1 - 128 gehen
+        /// Hilfsfunktion für Umwandlung Binär in Dezimal</para>
+        /// </summary>
+        /// <param name="charToConvert"></param>
+        /// <param name="conversionTable"></param>
         public void AddConvertedCharToDic(char[] charToConvert, Dictionary<int, int> conversionTable)
         {
             int bitCounter = 128;
@@ -110,10 +139,14 @@ namespace Service
             }
         }
 
-        // Checkt mit einer If-Schleife ob die Anzahl an Host größer oder kleiner 2^i ist
-        // Wenn größer -> Schleife geht einen weiter
-        // Wenn kleiner -> returned das Ergebnis von 2^i
-        // So groß muss das Subnetz sein um mit der geforderten Anzahl an Hosts klar zu kommen
+        /// <summary>
+        /// Checkt mit einer If-Schleife ob die Anzahl an Host größer oder kleiner 2^i ist
+        /// <para>Wenn größer -> Schleife geht einen weiter 
+        /// Wenn kleiner -> returned das Ergebnis von 2^i </para>
+        /// <para>So groß muss das Subnetz sein um mit der geforderten Anzahl an Hosts klar zu kommen </para>
+        /// </summary>
+        /// <param name="hostAmount"></param>
+        /// <returns></returns>
         public int GetMinNeededHosts(int hostAmount)
         {
             int neededHostAmount = 0;
@@ -127,12 +160,15 @@ namespace Service
             return neededHostAmount;
         }
 
-        // Die Schleife wird auf < 24 begrenzt, da ein Subnetz maximal 2^24 Hosts haben kann
-        // Es wird mit If geprüft ob ob die hostAmount größer oder kleiner als 2^i
-        // Wenn größer -> Schleife geht einen weiter
-        // Wenn kleiner -> returned das Ergebnis von 2^i
-        // Dies ist die Anzahl an Hostbits die du brauchst
-        // Notiz: Könnte später vllt mit GetMinNeededHosts zusammengefügt werden. Jedenfalls optimiert werden um aus zwei eine Funktion zu machen
+        /// <summary>
+        /// Die Schleife wird auf< 24 begrenzt, da ein Subnetz maximal 2^24 Hosts haben kann
+        /// Es wird mit If geprüft ob ob die hostAmount größer oder kleiner als 2^i
+        /// Wenn größer -> Schleife geht einen weiter
+        /// Wenn kleiner -> returned das Ergebnis von 2^i
+        /// Dies ist die Anzahl an Hostbits die du brauchst
+        /// </summary>
+        /// <param name="hostAmount"></param>
+        /// <returns></returns>
         public int CalcNeededHostbits(int hostAmount)
         {
             for (int i = 0; i < 24; i++)
@@ -144,10 +180,15 @@ namespace Service
             return 0;
         }
 
-        // Erhöht einen Teil einer übergebenen Ip-Adresse
-        // Ip wird in 4 gleichgroße Teile gespalten
-        // erhöht das oktet, dass startIndex / 8 als index hat
-        // Das Oktett wird in Dezimal umgewandelt, dann um 1 erhöht und dann wieder zurück addiert
+        /// <summary>
+        /// Erhöht einen Teil einer übergebenen Ip-Adresse
+        /// <para>Ip wird in 4 gleichgroße Teile gespalten
+        /// erhöht das oktet, dass startIndex / 8 als index hat
+        /// Das Oktett wird in Dezimal umgewandelt, dann um 1 erhöht und dann wieder zurück addiert</para>
+        /// </summary>
+        /// <param name="iPAdress"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
         public string IncrementIpAdress(string iPAdress, int startIndex)
         {
             // Teilt den String auf

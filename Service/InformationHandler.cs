@@ -15,10 +15,12 @@ namespace Service
             this.calculator = calculator!;
         }
 
+        /// <summary>
+        /// Zeigt alle berechneten Subnetze in der Konsole an
+        /// </summary>
+        /// <param name="inputEntity"></param>
         public void ShowAvailableAsymSubnets(AsymSubnetEntity inputEntity)
         {
-
-
             int counter = 1;
             foreach (string subnet in asymCalculator.CalcAvailableAsymSubnets(inputEntity))
             {

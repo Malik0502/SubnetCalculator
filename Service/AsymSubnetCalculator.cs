@@ -15,6 +15,11 @@ namespace Service
 
         private List<string> resultAsymCalc = new();
 
+        /// <summary>
+        /// Berechnet Asymetrisch Subnetze
+        /// </summary>
+        /// <param name="inputEntity"></param>
+        /// <returns></returns>
         public List<string> CalcAvailableAsymSubnets(AsymSubnetEntity inputEntity)
         {
             string iPAdressBinary = inputEntity.IPAdress!;
@@ -117,6 +122,11 @@ namespace Service
             return resultAsymCalc;
         }
 
+        /// <summary>
+        /// Berechnet Subnetze
+        /// </summary>
+        /// <param name="hostbits"></param>
+        /// <returns></returns>
         public string CalcSubnetmask(double hostbits)
         {
             // Berechnet die Anzahl an Einsen die nötig sind

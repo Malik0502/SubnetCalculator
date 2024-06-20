@@ -5,7 +5,6 @@ namespace Service
 {
     public class BinaryParser : IParser
     {   
-        /// 
         /// <summary>
         /// Nimmt einen String im Binärformat und konvertiert diesen zu String im Dezimalformat
         /// </summary>
@@ -92,6 +91,11 @@ namespace Service
             return string.Join(".", AdressInBinary.ToArray());
         }
 
+        /// <summary>
+        /// Konvertiert Strings zu einem Array aus einzelnen Chars.
+        /// </summary>
+        /// <param name="stringToConvert"></param>
+        /// <returns></returns>
         public char[] StringToCharArray(string stringToConvert)
         {
             BinaryParser parser = new();
