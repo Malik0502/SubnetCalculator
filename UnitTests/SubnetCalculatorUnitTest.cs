@@ -1,22 +1,25 @@
 using Service;
+using Service.Interfaces;
 
 namespace UnitTests
 {
     [TestClass]
     public class SubnetCalculatorUnitTest
     {
+        BinaryParser parser = new();
+
         [TestMethod]
         public void StringToBinary_IpAdress_ReturnTrue()
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "11000000.10101000.00000001.00000000";
             string input = "192.168.1.0";
 
             // Act
 
-            string testResult = helper.StringToBinary(input);
+            string testResult = parser.StringToBinary(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -27,13 +30,13 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "11000000.10101000.00000001.00000000";
             string input = "10.168.1.0";
 
             // Act
 
-            string testResult = helper.StringToBinary(input);
+            string testResult = parser.StringToBinary(input);
 
             // Assert
             Assert.AreNotEqual(expected, testResult);
@@ -44,13 +47,13 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "11111111.11111111.11000000.00000000";
             string input = "255.255.192.0";
 
             // Act
 
-            string testResult = helper.StringToBinary(input);
+            string testResult = parser.StringToBinary(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -61,13 +64,13 @@ namespace UnitTests
         {
             // Arrange 
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "11111111.11111111.11000000.00000000";
             string input = "255.255.255.0";
 
             // Act
 
-            string testResult = helper.StringToBinary(input);
+            string testResult = parser.StringToBinary(input);
 
             // Assert
             Assert.AreNotEqual(expected, input);
@@ -79,13 +82,13 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "192.168.1.0";
             string input = "11000000.10101000.00000001.00000000";
 
             // Act
 
-            string testResult = helper.BinaryToString(input);
+            string testResult = parser.BinaryToString(input);
 
             // Assert
 
@@ -97,13 +100,13 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "192.168.1.0";
             string input = "01111111.10101000.00000001.00000000";
 
             // Act
 
-            string testResult = helper.BinaryToString(input);
+            string testResult = parser.BinaryToString(input);
 
             // Assert
 
@@ -115,13 +118,13 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "255.192.0.0";
             string input = "11111111.11000000.00000000.00000000";
 
             // Act
 
-            string testResult = helper.BinaryToString(input);
+            string testResult = parser.BinaryToString(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -132,13 +135,13 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper();
+            var helper = new SubnetCalcHelper(parser);
             string expected = "255.255.0.0";
             string input = "11111111.11000000.00000000.00000000";
 
             // Act
 
-            string testResult = helper.BinaryToString(input);
+            string testResult = parser.BinaryToString(input);
 
             // Assert
             Assert.AreNotEqual(expected, testResult);
@@ -148,7 +151,8 @@ namespace UnitTests
         public void CalcNetworkAdress_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
+
+            var helper = new SubnetCalcHelper(parser);
             string expected = "00001000.00001000.00001000.00000000";
             string inputIp = "00001000.00001000.00001000.00001000";
             string inputSubnet = "11111111.11111111.11111111.11110000";
@@ -166,7 +170,8 @@ namespace UnitTests
         public void CalcNetworkAdressTest_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
+
+            var helper = new SubnetCalcHelper(parser);
             string expected = "10101100.00010000.00000001.10110000";
             string inputIp = "10101100.00010000.00000001.10110000";
             string inputSubnet = "11111111.11111111.11111111.11110000";
@@ -185,7 +190,8 @@ namespace UnitTests
         {
 
             // Arrange
-            var helper = new SubnetCalcHelper();
+
+            var helper = new SubnetCalcHelper(parser);
             string expected = "00001000.00001000.00001000.00100100";
             string inputIp = "00001000.00001000.00001000.00001000";
             string inputSubnet = "11111111.11111111.11111111.11110000";
@@ -204,7 +210,8 @@ namespace UnitTests
         {
 
             // Arrange
-            var helper = new SubnetCalcHelper();
+
+            var helper = new SubnetCalcHelper(parser);
             double expected = 3;
             int input = 8;
 
@@ -221,8 +228,9 @@ namespace UnitTests
         public void CalcEightAvailableSubnets_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
-            var svc = new SubnetCalculator();
+
+            var helper = new SubnetCalcHelper(parser);
+            var svc = new SubnetCalculator(parser, helper);
             List<string> expected = new List<string>();
             string inputIp = "192.168.1.0";
             string inputSubnet = "255.255.255.192";
@@ -252,7 +260,7 @@ namespace UnitTests
 
             for (int i = 0; i < testResult.Count; i++)
             {
-                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
+                Assert.AreEqual(expected[i], parser.BinaryToString(testResult[i]));
             }
         }
 
@@ -260,8 +268,9 @@ namespace UnitTests
         public void CalcThirtyTwoAvailableSubnets_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
-            var svc = new SubnetCalculator();
+
+            var helper = new SubnetCalcHelper(parser);
+            var svc = new SubnetCalculator(parser, helper);
             List<string> expected = new List<string>();
             string inputIp = "192.168.35.2";
             string inputSubnet = "255.128.0.0";
@@ -315,7 +324,7 @@ namespace UnitTests
 
             for (int i = 0; i < testResult.Count; i++)
             {
-                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
+                Assert.AreEqual(expected[i], parser.BinaryToString(testResult[i]));
             }
         }
 
@@ -323,8 +332,9 @@ namespace UnitTests
         public void CalcFourteenAvailableSubnets_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
-            var svc = new SubnetCalculator();
+
+            var helper = new SubnetCalcHelper(parser);
+            var svc = new SubnetCalculator(parser, helper);
             List<string> expected = new List<string>();
             string inputIp = "192.168.1.100";
             string inputSubnet = "255.252.0.0";
@@ -360,7 +370,7 @@ namespace UnitTests
 
             for (int i = 0; i < testResult.Count; i++)
             {
-                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
+                Assert.AreEqual(expected[i], parser.BinaryToString(testResult[i]));
             }
         }
 
@@ -368,7 +378,8 @@ namespace UnitTests
         public void GetMinNeededHosts_ReturnTrue()
         {
             // Arrange
-            SubnetCalcHelper helper = new();
+
+            SubnetCalcHelper helper = new(parser);
             int input = 333;
             int expected = 512;
 
@@ -383,7 +394,7 @@ namespace UnitTests
         public void CalcHostbits_ReturnTrue()
         {
             // Arrange
-            SubnetCalcHelper helper = new();
+            SubnetCalcHelper helper = new(parser);
             int input = 8;
             int expected = 3;
 
@@ -398,7 +409,8 @@ namespace UnitTests
         public void CalcNeededHostbits_ReturnTrue()
         {
             // Arrange
-            SubnetCalcHelper helper = new();
+
+            SubnetCalcHelper helper = new(parser);
             int input = 300;
             int expected = 9;
 
@@ -413,7 +425,9 @@ namespace UnitTests
         public void CalcSubnetmask_ReturnTrue()
         {
             // Arrange
-            AsymSubnetCalculator svc = new();
+            SubnetCalcHelper helper = new(parser);
+
+            AsymSubnetCalculator svc = new(helper, parser);
             int input = 8;
             string expected = "11111111.11111111.11111111.00000000";
 
@@ -428,8 +442,9 @@ namespace UnitTests
         public void CalcAsymSubnet_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
-            var svc = new AsymSubnetCalculator();
+
+            var helper = new SubnetCalcHelper(parser);
+            var svc = new AsymSubnetCalculator(helper, parser);
             List<string> expected = new List<string>();
             string inputIp = "172.16.1.0";
             List<int> inputHostAmount = new List<int>();
@@ -443,7 +458,7 @@ namespace UnitTests
 
             AsymSubnetEntity inputEntity = new()
             {
-                IPAdress = helper.StringToBinary(inputIp),
+                IPAdress = parser.StringToBinary(inputIp),
                 HostAmount = inputHostAmount,
                 SubnetAmount = inputSubnetAmount,
             };
@@ -466,7 +481,7 @@ namespace UnitTests
 
             for (int i = 0; i < testResult.Count; i++)
             {
-                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
+                Assert.AreEqual(expected[i], parser.BinaryToString(testResult[i]));
             }
         }
 
@@ -474,8 +489,9 @@ namespace UnitTests
         public void CalcAsymSubnetTwo_ReturnTrue()
         {
             // Arrange
-            var helper = new SubnetCalcHelper();
-            var svc = new AsymSubnetCalculator();
+
+            var helper = new SubnetCalcHelper(parser);
+            var svc = new AsymSubnetCalculator(helper, parser);
             List<string> expected = new List<string>();
             string inputIp = "192.168.35.0";
             List<int> inputHostAmount = new List<int>();
@@ -490,7 +506,7 @@ namespace UnitTests
 
             AsymSubnetEntity inputEntity = new()
             {
-                IPAdress = helper.StringToBinary(inputIp),
+                IPAdress = parser.StringToBinary(inputIp),
                 HostAmount = inputHostAmount,
                 SubnetAmount = inputSubnetAmount,
             };
@@ -515,7 +531,7 @@ namespace UnitTests
 
             for (int i = 0; i < testResult.Count; i++)
             {
-                Assert.AreEqual(expected[i], helper.BinaryToString(testResult[i]));
+                Assert.AreEqual(expected[i], parser.BinaryToString(testResult[i]));
             }
         }
     }

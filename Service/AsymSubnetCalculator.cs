@@ -1,26 +1,23 @@
-﻿namespace Service
+﻿using Service.Interfaces;
+
+namespace Service
 {
-    public class AsymSubnetCalculator
+    public class AsymSubnetCalculator : IAsymCalculator
     {
-        private SubnetCalcHelper helper = new();
-        private List<string> resultAsymCalc = new();
+        private readonly ISubnetHelper helper;
+        private readonly IParser parser;
 
-        public void ShowAvailableAsymSubnets(AsymSubnetEntity inputEntity)
+        public AsymSubnetCalculator(ISubnetHelper helper, IParser parser) 
         {
-            int counter = 1;
-            foreach (string subnet in CalcAvailableAsymSubnets(inputEntity))
-            {
-                string asyncSubnetAsDecimal = helper.BinaryToString(subnet);
-                Console.WriteLine(asyncSubnetAsDecimal);
-                if(counter % 2 == 0) Console.WriteLine("");
-
-                counter++;
-            }
+            this.helper = helper;
+            this.parser = parser;
         }
+
+        private List<string> resultAsymCalc = new();
 
         public List<string> CalcAvailableAsymSubnets(AsymSubnetEntity inputEntity)
         {
-            string iPAdressBinary = inputEntity.IPAdress;
+            string iPAdressBinary = inputEntity.IPAdress!;
             int subnetAmount = inputEntity.SubnetAmount;
 
             List<int> hostAmount = inputEntity.HostAmount;
@@ -46,7 +43,7 @@
 
             // Berechnet die Netzwerkadresse und teilt die einzelnen Zeichen in einem Array auf
             string networkadress = helper.CalcNetworkAdressBinary(iPAdressBinary, subnetmaskBinary);
-            char[] networkAdressAsChars = helper.StringToCharArray(networkadress);
+            char[] networkAdressAsChars = parser.StringToCharArray(networkadress);
 
             string subnet = "";
 

@@ -1,40 +1,36 @@
-﻿namespace Service
-{
-    public class SubnetCalculator
-    {
-        SubnetCalcHelper helper = new();
+﻿using Service.Interfaces;
 
-        // Zeigt alle Subnetze an, die berechnet werden in Dezimalformat an
-        public void ShowAvailableSubnets(SubnetEntity inputEntity)
+namespace Service
+{
+    public class SubnetCalculator : ICalculator
+    {
+        private readonly IParser parser;
+        private readonly ISubnetHelper helper;
+
+        public SubnetCalculator(IParser parser, ISubnetHelper helper)
         {
-            if (!ValidateUserInput(inputEntity))
-            {
-                Console.WriteLine("Ihre Eingaben haben das falsche Format");
-                Environment.Exit(0);
-            }
-            foreach (string subnet in CalcAvailableSubnets(inputEntity))
-            {
-                string subnetAsDecimal = helper.BinaryToString(subnet);
-                Console.WriteLine(subnetAsDecimal);
-            }
+            this.parser = parser;
+            this.helper = helper;
         }
 
-        // Berechnet mögliche Subnetze mithilfe einer Ip-Adresse, einer Subnetzmaske und der Anzahl an gewünschten Teilnetzen
+        /// <summary>
+        /// Berechnet mögliche Subnetze mithilfe einer Ip-Adresse, einer Subnetzmaske und der Anzahl an gewünschten Teilnetzen
+        /// </summary>
+        /// <param name="inputEntity"></param>
+        /// <returns></returns>
         public List<string> CalcAvailableSubnets(SubnetEntity inputEntity)
         {
-            string? ipAdressBinary = helper.StringToBinary(inputEntity.IPAdress);
-            string? subnetmaskBinary = helper.StringToBinary(inputEntity.SubnetMask);
+            string? ipAdressBinary = parser.StringToBinary(inputEntity.IPAdress!);
+            string? subnetmaskBinary = parser.StringToBinary(inputEntity.SubnetMask!);
 
             int subnetAmount = inputEntity.SubnetAmount;
 
             string? networkAdressBinary = helper.CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             double logOfAmountSubnets = helper.CalcLogarithmus(helper.GetMinNeededHosts(subnetAmount));               
-            /* Alte Version:
-             * Math.Ceiling(helper.CalcLogarithmus(inputEntity.SubnetAmount));*/
 
             int amountOnesInMask = helper.CountOnesInSubnetMask(subnetmaskBinary);
 
-            char[] singleNumsNetworkAdress = helper.StringToCharArray(networkAdressBinary);
+            char[] singleNumsNetworkAdress = parser.StringToCharArray(networkAdressBinary);
             string subnet = "";
 
             List<string> subnets = new();
@@ -72,16 +68,5 @@
             return subnets;
         }
 
-        // Prüft ob die Eingaben des Nutzers die geeignete Länge für eine Mögliche Ip Adresse bzw. Subnetzmaske hat
-        // Eine Ip-Adresse / Subnetzmaske mitsamt Punkten kann mindestens 7 und maximal 15 Zeichen beinhalten
-        // Ebenfalls wenn eines der beiden 0 ist wird false ausgegeben
-        private bool ValidateUserInput(SubnetEntity inputEntity)
-        {
-            int inputIpAdressLength = inputEntity.IPAdress.Length;
-            int inputSubnetmaskLength = inputEntity.SubnetMask.Length;
-
-            return (inputIpAdressLength > 15 || inputIpAdressLength < 7 || inputSubnetmaskLength > 15 || inputSubnetmaskLength < 7 || inputIpAdressLength == 0 || inputSubnetmaskLength == 0)
-                ? false : true;
-        }
     }
 }

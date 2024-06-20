@@ -1,10 +1,16 @@
-﻿using System.Collections;
-using System.Net;
+﻿using Service.Interfaces;
 
 namespace Service
 {
-    public class SubnetCalcHelper
+    public class SubnetCalcHelper : ISubnetHelper
     {
+        private readonly IParser parser;
+
+        public SubnetCalcHelper(IParser parser) 
+        {
+            this.parser = parser;
+        }
+
         // Berechnet die Netzwerkadresse mithilfe einer AND Operation und gibt diese als Binärstring aus
         public string CalcNetworkAdressBinary(string ipAdressBinary, string subnetMaskBinary)
         {
@@ -36,103 +42,17 @@ namespace Service
             return result;
         }
 
-        // Nimmt einen String als Eingabe und gibt einen String in Form von Binärcode zurück
-        public string StringToBinary(string stringToConvert)
-        {
-            string[] splittedAdress = SplitString(stringToConvert);
-            ArrayList AdressInBinary = new ArrayList();
-            try
-            {
-                // Iteriert durch die 4 Oktette und nutzt Modulo um den Rest herauszufinden
-                // Dieser ist dann eine Stelle des Binärcodes
-                foreach (var octet in splittedAdress)
-                {
-                    int parsedOctet = int.Parse(octet);
-                    string partialResult = "";
-
-                    for (int i = parsedOctet; i > 0; i /= 2)
-                    {
-                        partialResult += parsedOctet % 2;
-                        parsedOctet /= 2;
-                    }
-
-                    // Das unfertige Ergebnis wird mit den fehlenden Nullen aufgefüllt.
-                    // Dann wird dieser umgedeht und in eine Liste hinzugefügt
-                    // Dabei entsteht dann die richtige Zahl im Binärformat
-                    partialResult = FillUpWithZeros(partialResult);
-                    partialResult = ReverseString(partialResult);
-                    AdressInBinary.Add(partialResult);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Die IP-Adresse hat das falsche Format: {ex}");
-            }
-
-            // Die einzelnen Oktete in Binär werden dann mit einem . zwischen den einzelnen Indexen als String zusammengefügt
-            return string.Join(".", AdressInBinary.ToArray());
-        }
-
-        // Nimmt einen String im Binärformat und konvertiert diesen zu String im Dezimalformat
-        public string BinaryToString(string binaryToConvert)
-        {
-            string[] splittedBinary = SplitString(binaryToConvert);
-            int partialResult;
-            string result = "";
-            int counter = 0;
-
-            // Iteriert durch den splitted String Array 
-            // Es wird ein leeres Dictionary erstellt um die Umrechnung durchzuführen
-            // Das Dictionary wird mit den einzelnen Chars von einem Oktett gefüllt
-            // Key = Vielfaches von 2 , 1 bis 128
-            // Value = Binärzahl vom Oktett von vorne nach hinten
-            foreach (string octet in splittedBinary)
-            {
-                partialResult = 0;
-                Dictionary<int, int> conversionTable = new Dictionary<int, int>();
-
-                char[] singleNumsFromOctet = octet.ToCharArray();
-                AddConvertedCharToDic(singleNumsFromOctet, conversionTable);
-
-                foreach (var item in conversionTable)
-                {
-                    partialResult += item.Key * item.Value;
-                }
-
-                // Fügt die passenden Punkte hinzu um das Format der Ip-Adresse zu erfüllen
-                result += (counter != splittedBinary.Length - 1) ? partialResult + "." : partialResult;
-                
-                counter++;
-
-            }
-            return result;
-        }
-
         // Zählt die einsen in der Subnetzmaske um später die Anzahl an Stellen in der Netzwerkadresse zu überspringen
         public int CountOnesInSubnetMask(string subnetmaskBinary)
         {
-            char[] subnetmaskAsChars = StringToCharArray(subnetmaskBinary);
+            IParser parser = this.parser;
+            char[] subnetmaskAsChars = parser.StringToCharArray(subnetmaskBinary);
             int counter = 0;
             foreach (var binaryNum in subnetmaskAsChars)
             {
                 if (binaryNum == '1') counter++;
             }
             return counter;
-        }
-
-        // Konvertiert einen string zu einem Array aus Chars
-        public char[] StringToCharArray(string StringToConvert)
-        {
-            string[] splittedString = SplitString(StringToConvert);
-            char[] chars = new char[32];
-
-            for (int i = 0; i < splittedString.Length; i++)
-            {
-                char[] splittedStringAsCharArray = splittedString[i].ToCharArray();
-                splittedStringAsCharArray.CopyTo(chars, splittedStringAsCharArray.Length * i);
-            }
-
-            return chars;
         }
 
         // Teilt einen String auf um die Punkte bei der IP wegzubekommen

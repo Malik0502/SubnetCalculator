@@ -1,5 +1,5 @@
 ﻿using Service;
-using System.Collections;
+using Service.Interfaces;
 
 namespace Subnetzrechner
 {
@@ -7,7 +7,14 @@ namespace Subnetzrechner
     {
         static void Main(string[] args)
         {
-            new Menu().StartMenu();
+            BinaryParser parser = new BinaryParser();
+            SubnetCalcHelper subnetHelper = new SubnetCalcHelper(parser);
+            AsymSubnetCalculator asymCalculator = new AsymSubnetCalculator(subnetHelper, parser);
+            SubnetCalculator calculator = new SubnetCalculator(parser, subnetHelper);
+            InformationHandler infoHandler = new InformationHandler(parser, asymCalculator, calculator);
+            
+
+            new Menu(infoHandler, parser).StartMenu();
         }
     }
 }
