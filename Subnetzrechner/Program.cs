@@ -1,4 +1,6 @@
-﻿using Service;
+﻿using Autofac;
+using Autofac.Core;
+using Service;
 using Service.Interfaces;
 
 namespace Subnetzrechner
@@ -7,14 +9,13 @@ namespace Subnetzrechner
     {
         static void Main(string[] args)
         {
-            BinaryParser parser = new BinaryParser();
-            SubnetCalcHelper subnetHelper = new SubnetCalcHelper(parser);
-            AsymSubnetCalculator asymCalculator = new AsymSubnetCalculator(subnetHelper, parser);
-            SubnetCalculator calculator = new SubnetCalculator(parser, subnetHelper);
-            InformationHandler infoHandler = new InformationHandler(parser, asymCalculator, calculator);
-            
+            var container = DependencyContainer.BuildContainer();
 
-            new Menu(infoHandler, parser).StartMenu();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                var writer = scope.Resolve<IMenu>();
+                writer.StartMenu();
+            }
         }
     }
 }
