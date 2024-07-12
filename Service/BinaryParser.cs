@@ -4,7 +4,13 @@ using System.Collections;
 namespace Service
 {
     public class BinaryParser : IParser
-    {   
+    {
+        private readonly IBinaryString binaryString;
+
+        public BinaryParser(IBinaryString binaryString){
+            this.binaryString = binaryString;
+        }
+
         /// <summary>
         /// Nimmt einen String im Binärformat und konvertiert diesen zu String im Dezimalformat
         /// </summary>
@@ -12,10 +18,9 @@ namespace Service
         /// <returns></returns>
         public string BinaryToString(string binaryToConvert)
         {
-            BinaryParser parser = new();
-            SubnetCalcHelper helper = new(parser);
+            SubnetCalcHelper helper = new();
 
-            string[] splittedBinary = helper.SplitString(binaryToConvert);
+            string[] splittedBinary = binaryToConvert.Split(".");
             int partialResult;
             string result = "";
             int counter = 0;
@@ -54,10 +59,7 @@ namespace Service
         /// <returns></returns>
         public string StringToBinary(string stringToConvert)
         {
-            BinaryParser parser = new();
-            SubnetCalcHelper helper = new(parser);
-
-            string[] splittedAdress = helper.SplitString(stringToConvert);
+            string[] splittedAdress = stringToConvert.Split(".");
             ArrayList AdressInBinary = new ArrayList();
             try
             {
@@ -77,8 +79,8 @@ namespace Service
                     // Das unfertige Ergebnis wird mit den fehlenden Nullen aufgefüllt.
                     // Dann wird dieser umgedeht und in eine Liste hinzugefügt
                     // Dabei entsteht dann die richtige Zahl im Binärformat
-                    partialResult = helper.FillUpWithZeros(partialResult);
-                    partialResult = helper.ReverseString(partialResult);
+                    partialResult = binaryString.FillUpWithZeros(partialResult);
+                    partialResult = partialResult.ReverseString();
                     AdressInBinary.Add(partialResult);
                 }
             }
@@ -98,10 +100,7 @@ namespace Service
         /// <returns></returns>
         public char[] StringToCharArray(string stringToConvert)
         {
-            BinaryParser parser = new();
-            SubnetCalcHelper helper = new(parser);
-
-            string[] splittedString = helper.SplitString(stringToConvert);
+            string[] splittedString = stringToConvert.Split(".");
             char[] chars = new char[32];
 
             for (int i = 0; i < splittedString.Length; i++)

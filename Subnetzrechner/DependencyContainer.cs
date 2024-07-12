@@ -10,11 +10,12 @@ namespace Subnetzrechner
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<BinaryStringModificator>().As<IBinaryString>();
             builder.RegisterType<BinaryParser>().As<IParser>();
             builder.RegisterType<SubnetCalcHelper>().As<ISubnetHelper>();
             builder.RegisterType<AsymSubnetCalculator>().As<IAsymCalculator>();
             builder.RegisterType<SubnetCalculator>().As<ICalculator>();
-            builder.RegisterType<InformationHandler>().As<IInformation>();
+            builder.RegisterType<UserInteraction>().As<IUserInteraction>();
             builder.RegisterType<Menu>().As<IMenu>();
 
             return builder.Build();

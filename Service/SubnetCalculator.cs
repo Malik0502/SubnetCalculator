@@ -6,11 +6,13 @@ namespace Service
     {
         private readonly IParser parser;
         private readonly ISubnetHelper helper;
+        private readonly IBinaryString binaryString;
 
-        public SubnetCalculator(IParser parser, ISubnetHelper helper)
+        public SubnetCalculator(IParser parser, ISubnetHelper helper, IBinaryString binaryString)
         {
             this.parser = parser;
             this.helper = helper;
+            this.binaryString = binaryString;
         }
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace Service
             string? networkAdressBinary = helper.CalcNetworkAdressBinary(ipAdressBinary, subnetmaskBinary);
             double logOfAmountSubnets = helper.CalcLogarithmus(helper.GetMinNeededHosts(subnetAmount));               
 
-            int amountOnesInMask = helper.CountOnesInSubnetMask(subnetmaskBinary);
+            int amountOnesInMask = binaryString.CountOnesInSubnetMask(subnetmaskBinary);
 
             char[] singleNumsNetworkAdress = parser.StringToCharArray(networkAdressBinary);
             string subnet = "";

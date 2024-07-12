@@ -5,18 +5,19 @@ namespace Subnetzrechner
 {
     public class Menu : IMenu
     {
-        private readonly IInformation information;
+        private readonly IUserInteraction information;
         private readonly IParser parser;
 
-        public Menu(IInformation information, IParser parser)
+        public Menu(IUserInteraction information, IParser parser)
         {
             this.information = information;
             this.parser = parser;
         }
 
+        // Komplettes Menü entfernen und eine Commandline Anwendung daraus machen.
         public void StartMenu()
         {
-            IInformation information = this.information;
+            IUserInteraction information = this.information;
 
             while (true)
             {
@@ -84,7 +85,7 @@ namespace Subnetzrechner
                     }
 
 
-                    Console.ReadKey();
+                    Console.Read();
                 }
                 catch (Exception ex)
                 {
