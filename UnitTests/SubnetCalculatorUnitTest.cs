@@ -6,13 +6,16 @@ namespace UnitTests
     [TestClass]
     public class SubnetCalculatorUnitTest
     {   
+        private IBinaryString InitBinaryString(){
+            IBinaryString binaryString = new BinaryStringModificator();
+            return binaryString;
+        }
 
         [TestMethod]
         public void StringToBinary_IpAdress_ReturnTrue()
         {
             // Arrange
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
 
             string expected = "11000000.10101000.00000001.00000000";
             string input = "192.168.1.0";
@@ -29,8 +32,7 @@ namespace UnitTests
         public void StringToBinary_IpAdress_ReturnFalse()
         {
             // Arrange
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
 
             string expected = "11000000.10101000.00000001.00000000";
             string input = "10.168.1.0";
@@ -48,8 +50,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "11111111.11111111.11000000.00000000";
             string input = "255.255.192.0";
 
@@ -66,8 +67,7 @@ namespace UnitTests
         {
             // Arrange 
 
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "11111111.11111111.11000000.00000000";
             string input = "255.255.255.0";
 
@@ -85,8 +85,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "192.168.1.0";
             string input = "11000000.10101000.00000001.00000000";
 
@@ -104,8 +103,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "192.168.1.0";
             string input = "01111111.10101000.00000001.00000000";
 
@@ -123,8 +121,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "255.192.0.0";
             string input = "11111111.11000000.00000000.00000000";
 
@@ -141,8 +138,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
-            IParser parser = new BinaryParser(binaryString);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "255.255.0.0";
             string input = "11111111.11000000.00000000.00000000";
 
@@ -235,7 +231,7 @@ namespace UnitTests
         public void CalcEightAvailableSubnets_ReturnTrue()
         {
             // Arrange
-            IBinaryString binaryString = new BinaryStringModificator();
+            IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
             var svc = new SubnetCalculator(parser, helper, binaryString);
@@ -277,7 +273,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
+            IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
             var svc = new SubnetCalculator(parser, helper, binaryString);
@@ -343,7 +339,7 @@ namespace UnitTests
         {
             // Arrange
 
-            IBinaryString binaryString = new BinaryStringModificator();
+            IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
             var svc = new SubnetCalculator(parser, helper, binaryString);
@@ -453,7 +449,7 @@ namespace UnitTests
         public void CalcAsymSubnet_ReturnTrue()
         {
             // Arrange
-            IBinaryString binaryString = new BinaryStringModificator();
+            IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
             var svc = new AsymSubnetCalculator(helper, parser, binaryString);
@@ -502,7 +498,7 @@ namespace UnitTests
         public void CalcAsymSubnetTwo_ReturnTrue()
         {
             // Arrange
-            IBinaryString binaryString = new BinaryStringModificator();
+            IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
             var svc = new AsymSubnetCalculator(helper, parser, binaryString);
