@@ -25,9 +25,6 @@ namespace Service
             string result = "";
             int counter = 0;
 
-            // Iteriert durch den splitted String Array 
-            // Es wird ein leeres Dictionary erstellt um die Umrechnung durchzuführen
-            // Das Dictionary wird mit den einzelnen Chars von einem Oktett gefüllt
             // Key = Vielfaches von 2 , 1 bis 128
             // Value = Binärzahl vom Oktett von vorne nach hinten
             foreach (string octet in splittedBinary)
@@ -35,8 +32,7 @@ namespace Service
                 partialResult = 0;
                 Dictionary<int, int> conversionTable = new Dictionary<int, int>();
 
-                char[] singleNumsFromOctet = octet.ToCharArray();
-                helper.AddConvertedCharToDic(singleNumsFromOctet, conversionTable);
+                helper.AddConvertedCharToDic(octet.ToCharArray(), conversionTable);
 
                 foreach (var item in conversionTable)
                 {
@@ -76,11 +72,7 @@ namespace Service
                         parsedOctet /= 2;
                     }
 
-                    // Das unfertige Ergebnis wird mit den fehlenden Nullen aufgefüllt.
-                    // Dann wird dieser umgedeht und in eine Liste hinzugefügt
-                    // Dabei entsteht dann die richtige Zahl im Binärformat
-                    partialResult = binaryString.FillUpWithZeros(partialResult);
-                    partialResult = partialResult.ReverseString();
+                    partialResult = binaryString.FillUpWithZeros(partialResult).ReverseString();
                     AdressInBinary.Add(partialResult);
                 }
             }
@@ -89,7 +81,6 @@ namespace Service
                 Console.WriteLine($"Die IP-Adresse hat das falsche Format: {ex}");
             }
 
-            // Die einzelnen Oktete in Binär werden dann mit einem . zwischen den einzelnen Indexen als String zusammengefügt
             return string.Join(".", AdressInBinary.ToArray());
         }
 
