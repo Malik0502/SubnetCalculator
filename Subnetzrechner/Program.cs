@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using Autofac.Core;
 using Service;
-using Autofac;
 using Service.Interfaces;
 
 namespace Subnetzrechner
@@ -20,26 +18,15 @@ namespace Subnetzrechner
             //new Menu(infoHandler, parser).StartMenu();
 
             // Dies ist der Weg um die Dependency Injection über einen Builder und einen Container auflösen zu lassen
+            // Genaue Implementierung in DependencyContainer.cs
 
-            var builder = new ContainerBuilder();
-
-            builder.RegisterType<BinaryParser>().As<IParser>();
-            builder.RegisterType<SubnetCalcHelper>().As<ISubnetHelper>();
-            builder.RegisterType<AsymSubnetCalculator>().As<IAsymCalculator>();
-            builder.RegisterType<SubnetCalculator>().As<ICalculator>();
-            builder.RegisterType<InformationHandler>().As<IInformation>();
-            builder.RegisterType<Menu>().As<IMenu>();
-            
-            var container = builder.Build();
+            var container = DependencyContainer.BuildContainer();
 
             using (var scope = container.BeginLifetimeScope())
             {
                 var menu = scope.Resolve<IMenu>();
                 menu.StartMenu();
             }
-
-
-            new Menu(infoHandler, parser).StartMenu();
         }
     }
 }

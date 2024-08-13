@@ -122,6 +122,6 @@ namespace Service
                 // Ruft die Funktion mit den veränderten Werten erneut auf
                 CalcAvailableAsymSubnets(asymSubnetEntity);
             return resultAsymCalc;
-        } 
+        }
     }
 }

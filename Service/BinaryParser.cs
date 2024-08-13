@@ -18,7 +18,8 @@ namespace Service
         /// <returns></returns>
         public string BinaryToString(string binaryToConvert)
         {
-            SubnetCalcHelper helper = new();
+            BinaryParser parser = new(binaryString);
+            SubnetCalcHelper helper = new(parser);
 
             string[] splittedBinary = binaryToConvert.Split(".");
             int partialResult;
