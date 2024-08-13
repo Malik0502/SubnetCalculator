@@ -1,4 +1,6 @@
-﻿using Service;
+﻿using Autofac;
+using Autofac.Core;
+using Service;
 using Autofac;
 using Service.Interfaces;
 
@@ -37,6 +39,7 @@ namespace Subnetzrechner
             }
 
 
+            new Menu(infoHandler, parser).StartMenu();
         }
     }
 }

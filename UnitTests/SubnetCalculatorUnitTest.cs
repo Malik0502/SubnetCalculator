@@ -5,15 +5,18 @@ namespace UnitTests
 {
     [TestClass]
     public class SubnetCalculatorUnitTest
-    {
-        BinaryParser parser = new();
+    {   
+        private IBinaryString InitBinaryString(){
+            IBinaryString binaryString = new BinaryStringModificator();
+            return binaryString;
+        }
 
         [TestMethod]
         public void StringToBinary_IpAdress_ReturnTrue()
         {
             // Arrange
+            IParser parser = new BinaryParser(InitBinaryString());
 
-            var helper = new SubnetCalcHelper(parser);
             string expected = "11000000.10101000.00000001.00000000";
             string input = "192.168.1.0";
 
@@ -29,8 +32,8 @@ namespace UnitTests
         public void StringToBinary_IpAdress_ReturnFalse()
         {
             // Arrange
+            IParser parser = new BinaryParser(InitBinaryString());
 
-            var helper = new SubnetCalcHelper(parser);
             string expected = "11000000.10101000.00000001.00000000";
             string input = "10.168.1.0";
 
@@ -47,7 +50,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "11111111.11111111.11000000.00000000";
             string input = "255.255.192.0";
 
@@ -64,7 +67,7 @@ namespace UnitTests
         {
             // Arrange 
 
-            var helper = new SubnetCalcHelper(parser);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "11111111.11111111.11000000.00000000";
             string input = "255.255.255.0";
 
@@ -82,7 +85,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "192.168.1.0";
             string input = "11000000.10101000.00000001.00000000";
 
@@ -100,7 +103,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "192.168.1.0";
             string input = "01111111.10101000.00000001.00000000";
 
@@ -118,7 +121,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "255.192.0.0";
             string input = "11111111.11000000.00000000.00000000";
 
@@ -135,7 +138,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            IParser parser = new BinaryParser(InitBinaryString());
             string expected = "255.255.0.0";
             string input = "11111111.11000000.00000000.00000000";
 
@@ -152,7 +155,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            var helper = new SubnetCalcHelper();
             string expected = "00001000.00001000.00001000.00000000";
             string inputIp = "00001000.00001000.00001000.00001000";
             string inputSubnet = "11111111.11111111.11111111.11110000";
@@ -171,7 +174,7 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            var helper = new SubnetCalcHelper();
             string expected = "10101100.00010000.00000001.10110000";
             string inputIp = "10101100.00010000.00000001.10110000";
             string inputSubnet = "11111111.11111111.11111111.11110000";
@@ -191,7 +194,7 @@ namespace UnitTests
 
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            var helper = new SubnetCalcHelper();
             string expected = "00001000.00001000.00001000.00100100";
             string inputIp = "00001000.00001000.00001000.00001000";
             string inputSubnet = "11111111.11111111.11111111.11110000";
@@ -211,7 +214,7 @@ namespace UnitTests
 
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
+            var helper = new SubnetCalcHelper();
             double expected = 3;
             int input = 8;
 
@@ -228,9 +231,10 @@ namespace UnitTests
         public void CalcEightAvailableSubnets_ReturnTrue()
         {
             // Arrange
-
-            var helper = new SubnetCalcHelper(parser);
-            var svc = new SubnetCalculator(parser, helper);
+            IBinaryString binaryString = InitBinaryString();
+            IParser parser = new BinaryParser(binaryString);
+            var helper = new SubnetCalcHelper();
+            var svc = new SubnetCalculator(parser, helper, binaryString);
             List<string> expected = new List<string>();
             string inputIp = "192.168.1.0";
             string inputSubnet = "255.255.255.192";
@@ -269,8 +273,10 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
-            var svc = new SubnetCalculator(parser, helper);
+            IBinaryString binaryString = InitBinaryString();
+            IParser parser = new BinaryParser(binaryString);
+            var helper = new SubnetCalcHelper();
+            var svc = new SubnetCalculator(parser, helper, binaryString);
             List<string> expected = new List<string>();
             string inputIp = "192.168.35.2";
             string inputSubnet = "255.128.0.0";
@@ -333,8 +339,10 @@ namespace UnitTests
         {
             // Arrange
 
-            var helper = new SubnetCalcHelper(parser);
-            var svc = new SubnetCalculator(parser, helper);
+            IBinaryString binaryString = InitBinaryString();
+            IParser parser = new BinaryParser(binaryString);
+            var helper = new SubnetCalcHelper();
+            var svc = new SubnetCalculator(parser, helper, binaryString);
             List<string> expected = new List<string>();
             string inputIp = "192.168.1.100";
             string inputSubnet = "255.252.0.0";
@@ -379,7 +387,7 @@ namespace UnitTests
         {
             // Arrange
 
-            SubnetCalcHelper helper = new(parser);
+            SubnetCalcHelper helper = new();
             int input = 333;
             int expected = 512;
 
@@ -394,7 +402,7 @@ namespace UnitTests
         public void CalcHostbits_ReturnTrue()
         {
             // Arrange
-            SubnetCalcHelper helper = new(parser);
+            SubnetCalcHelper helper = new();
             int input = 8;
             int expected = 3;
 
@@ -410,7 +418,7 @@ namespace UnitTests
         {
             // Arrange
 
-            SubnetCalcHelper helper = new(parser);
+            SubnetCalcHelper helper = new();
             int input = 300;
             int expected = 9;
 
@@ -425,14 +433,13 @@ namespace UnitTests
         public void CalcSubnetmask_ReturnTrue()
         {
             // Arrange
-            SubnetCalcHelper helper = new(parser);
+            SubnetCalcHelper helper = new();
 
-            AsymSubnetCalculator svc = new(helper, parser);
             int input = 8;
             string expected = "11111111.11111111.11111111.00000000";
 
             // Act
-            string testResult = svc.CalcSubnetmask(input);
+            string testResult = helper.CalcSubnetmask(input);
 
             // Assert
             Assert.AreEqual(expected, testResult);
@@ -442,17 +449,19 @@ namespace UnitTests
         public void CalcAsymSubnet_ReturnTrue()
         {
             // Arrange
-
-            var helper = new SubnetCalcHelper(parser);
-            var svc = new AsymSubnetCalculator(helper, parser);
+            IBinaryString binaryString = InitBinaryString();
+            IParser parser = new BinaryParser(binaryString);
+            var helper = new SubnetCalcHelper();
+            var svc = new AsymSubnetCalculator(helper, parser, binaryString);
             List<string> expected = new List<string>();
             string inputIp = "172.16.1.0";
-            List<int> inputHostAmount = new List<int>();
-
-            inputHostAmount.Add(60);
-            inputHostAmount.Add(50);
-            inputHostAmount.Add(17);
-            inputHostAmount.Add(12);
+            List<int> inputHostAmount = new List<int>
+            {
+                60,
+                50,
+                17,
+                12
+            };
 
             int inputSubnetAmount = 4;
 
@@ -489,18 +498,20 @@ namespace UnitTests
         public void CalcAsymSubnetTwo_ReturnTrue()
         {
             // Arrange
-
-            var helper = new SubnetCalcHelper(parser);
-            var svc = new AsymSubnetCalculator(helper, parser);
+            IBinaryString binaryString = InitBinaryString();
+            IParser parser = new BinaryParser(binaryString);
+            var helper = new SubnetCalcHelper();
+            var svc = new AsymSubnetCalculator(helper, parser, binaryString);
             List<string> expected = new List<string>();
             string inputIp = "192.168.35.0";
-            List<int> inputHostAmount = new List<int>();
-
-            inputHostAmount.Add(60);
-            inputHostAmount.Add(30);
-            inputHostAmount.Add(15);
-            inputHostAmount.Add(12);
-            inputHostAmount.Add(13);
+            List<int> inputHostAmount = new List<int>
+            {
+                60,
+                30,
+                15,
+                12,
+                13
+            };
 
             int inputSubnetAmount = 5;
 
@@ -521,7 +532,6 @@ namespace UnitTests
             expected.Add("192.168.35.126");
             expected.Add("192.168.35.129");
             expected.Add("192.168.35.142");
-
 
             // Act
 

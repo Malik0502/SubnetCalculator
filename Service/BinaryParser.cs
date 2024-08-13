@@ -4,7 +4,13 @@ using System.Collections;
 namespace Service
 {
     public class BinaryParser : IParser
-    {   
+    {
+        private readonly IBinaryString binaryString;
+
+        public BinaryParser(IBinaryString binaryString){
+            this.binaryString = binaryString;
+        }
+
         /// <summary>
         /// Nimmt einen String im Binärformat und konvertiert diesen zu String im Dezimalformat
         /// </summary>
@@ -12,17 +18,13 @@ namespace Service
         /// <returns></returns>
         public string BinaryToString(string binaryToConvert)
         {
-            BinaryParser parser = new();
-            SubnetCalcHelper helper = new(parser);
+            SubnetCalcHelper helper = new();
 
-            string[] splittedBinary = helper.SplitString(binaryToConvert);
+            string[] splittedBinary = binaryToConvert.Split(".");
             int partialResult;
             string result = "";
             int counter = 0;
 
-            // Iteriert durch den splitted String Array 
-            // Es wird ein leeres Dictionary erstellt um die Umrechnung durchzuführen
-            // Das Dictionary wird mit den einzelnen Chars von einem Oktett gefüllt
             // Key = Vielfaches von 2 , 1 bis 128
             // Value = Binärzahl vom Oktett von vorne nach hinten
             foreach (string octet in splittedBinary)
@@ -30,8 +32,7 @@ namespace Service
                 partialResult = 0;
                 Dictionary<int, int> conversionTable = new Dictionary<int, int>();
 
-                char[] singleNumsFromOctet = octet.ToCharArray();
-                helper.AddConvertedCharToDic(singleNumsFromOctet, conversionTable);
+                helper.AddConvertedCharToDic(octet.ToCharArray(), conversionTable);
 
                 foreach (var item in conversionTable)
                 {
@@ -54,10 +55,7 @@ namespace Service
         /// <returns></returns>
         public string StringToBinary(string stringToConvert)
         {
-            BinaryParser parser = new();
-            SubnetCalcHelper helper = new(parser);
-
-            string[] splittedAdress = helper.SplitString(stringToConvert);
+            string[] splittedAdress = stringToConvert.Split(".");
             ArrayList AdressInBinary = new ArrayList();
             try
             {
@@ -74,11 +72,7 @@ namespace Service
                         parsedOctet /= 2;
                     }
 
-                    // Das unfertige Ergebnis wird mit den fehlenden Nullen aufgefüllt.
-                    // Dann wird dieser umgedeht und in eine Liste hinzugefügt
-                    // Dabei entsteht dann die richtige Zahl im Binärformat
-                    partialResult = helper.FillUpWithZeros(partialResult);
-                    partialResult = helper.ReverseString(partialResult);
+                    partialResult = binaryString.FillUpWithZeros(partialResult).ReverseString();
                     AdressInBinary.Add(partialResult);
                 }
             }
@@ -87,7 +81,6 @@ namespace Service
                 Console.WriteLine($"Die IP-Adresse hat das falsche Format: {ex}");
             }
 
-            // Die einzelnen Oktete in Binär werden dann mit einem . zwischen den einzelnen Indexen als String zusammengefügt
             return string.Join(".", AdressInBinary.ToArray());
         }
 
@@ -98,10 +91,7 @@ namespace Service
         /// <returns></returns>
         public char[] StringToCharArray(string stringToConvert)
         {
-            BinaryParser parser = new();
-            SubnetCalcHelper helper = new(parser);
-
-            string[] splittedString = helper.SplitString(stringToConvert);
+            string[] splittedString = stringToConvert.Split(".");
             char[] chars = new char[32];
 
             for (int i = 0; i < splittedString.Length; i++)

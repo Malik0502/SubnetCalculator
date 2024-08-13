@@ -1,6 +1,6 @@
 ﻿namespace Service.Interfaces
 {
-    public  interface IInformation
+    public  interface IUserInteraction
     {
         public void ShowAvailableSubnets(SubnetEntity inputEntity);
 

@@ -2,13 +2,13 @@
 
 namespace Service
 {
-    public class InformationHandler : IInformation
+    public class UserInteraction : IUserInteraction
     {
         private readonly IParser parser;
         private readonly IAsymCalculator asymCalculator;
         private readonly ICalculator calculator;
 
-        public InformationHandler(IParser parser, IAsymCalculator asymCalculator, ICalculator calculator) 
+        public UserInteraction(IParser parser, IAsymCalculator asymCalculator, ICalculator calculator) 
         {
             this.parser = parser;
             this.asymCalculator = asymCalculator;

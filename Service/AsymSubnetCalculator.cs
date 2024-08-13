@@ -6,11 +6,13 @@ namespace Service
     {
         private readonly ISubnetHelper helper;
         private readonly IParser parser;
+        private readonly IBinaryString binaryString;
 
-        public AsymSubnetCalculator(ISubnetHelper helper, IParser parser) 
+        public AsymSubnetCalculator(ISubnetHelper helper, IParser parser, IBinaryString binaryString) 
         {
             this.helper = helper;
             this.parser = parser;
+            this.binaryString = binaryString;
         }
 
         private List<string> resultAsymCalc = new();
@@ -43,8 +45,8 @@ namespace Service
             int neededHosts = helper.GetMinNeededHosts(hosts);
             int hostbit = Convert.ToInt32(helper.CalcLogarithmus(neededHosts));
 
-            string subnetmaskBinary = CalcSubnetmask(hostbit);
-            int amountOnesMask = helper.CountOnesInSubnetMask(subnetmaskBinary);
+            string subnetmaskBinary = helper.CalcSubnetmask(hostbit);
+            int amountOnesMask = binaryString.CountOnesInSubnetMask(subnetmaskBinary);
 
             // Berechnet die Netzwerkadresse und teilt die einzelnen Zeichen in einem Array auf
             string networkadress = helper.CalcNetworkAdressBinary(iPAdressBinary, subnetmaskBinary);
@@ -59,7 +61,7 @@ namespace Service
                 // Dabei entsteht die Netzwerkadresse fürs nächste Subnetz
                 if (i == neededHosts)
                 {
-                    resultAsymCalc.Add(helper.IncrementIpAdress(resultAsymCalc.Last(), amountOnesMask));
+                    resultAsymCalc.Add(binaryString.IncrementIpAdress(resultAsymCalc.Last(), amountOnesMask));
                     subnet = "";
                 }
                 else
@@ -120,28 +122,6 @@ namespace Service
                 // Ruft die Funktion mit den veränderten Werten erneut auf
                 CalcAvailableAsymSubnets(asymSubnetEntity);
             return resultAsymCalc;
-        }
-
-        /// <summary>
-        /// Berechnet Subnetze
-        /// </summary>
-        /// <param name="hostbits"></param>
-        /// <returns></returns>
-        public string CalcSubnetmask(double hostbits)
-        {
-            // Berechnet die Anzahl an Einsen die nötig sind
-            // Hostbits = 32 - Anzahl Nullen in Subnetzmaske
-            int amountOfOnes = 32 - Convert.ToInt32(hostbits);
-            string subnetmask = ""; 
-
-            // Setzt die Subnetzmaske in Binär zusammen. Wenn I <= Anzahl Einsen dann wird eine 1 gesetzt,
-            // Sonst eine 0
-            // Dazwischen wird geprüft ob i Modulo 8 = 0 ergibt, dann ist das Ende eines Oktets erreicht. D.h. Punkt muss gesetzt werden
-            for (int i = 1; i <= 32; i++)
-            {
-                subnetmask += (i <= amountOfOnes) ? (i % 8 == 0 && i != 32) ? "1" + "." : "1" : (i % 8 == 0 && i != 32) ? "0" + "." : "0";
-            }
-            return subnetmask;
-        }
+        } 
     }
 }
