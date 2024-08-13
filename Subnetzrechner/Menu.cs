@@ -3,7 +3,7 @@ using Service.Interfaces;
 
 namespace Subnetzrechner
 {
-    public class Menu
+    public class Menu : IMenu
     {
         private readonly IInformation information;
         private readonly IParser parser;
