@@ -452,7 +452,8 @@ namespace UnitTests
             IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
-            var svc = new AsymSubnetCalculator(helper, parser, binaryString);
+            IAsymIpAdressBuilder ipAdressBuilder = new AsymIpAdressBuilder();
+            var svc = new AsymSubnetCalculator(helper, parser, binaryString, ipAdressBuilder);
             List<string> expected = new List<string>();
             string inputIp = "172.16.1.0";
             List<int> inputHostAmount = new List<int>
@@ -501,7 +502,8 @@ namespace UnitTests
             IBinaryString binaryString = InitBinaryString();
             IParser parser = new BinaryParser(binaryString);
             var helper = new SubnetCalcHelper();
-            var svc = new AsymSubnetCalculator(helper, parser, binaryString);
+            IAsymIpAdressBuilder ipAdressBuilder = new AsymIpAdressBuilder();
+            var svc = new AsymSubnetCalculator(helper, parser, binaryString, ipAdressBuilder);
             List<string> expected = new List<string>();
             string inputIp = "192.168.35.0";
             List<int> inputHostAmount = new List<int>

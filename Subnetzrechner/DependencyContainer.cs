@@ -17,6 +17,7 @@ namespace Subnetzrechner
             builder.RegisterType<SubnetCalculator>().As<ICalculator>();
             builder.RegisterType<UserInteraction>().As<IUserInteraction>();
             builder.RegisterType<Menu>().As<IMenu>();
+            builder.RegisterType<AsymIpAdressBuilder>().As<IAsymIpAdressBuilder>();
 
             return builder.Build();
         }
